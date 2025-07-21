@@ -2,14 +2,14 @@
 
 | 画面ID    | 画面名 / URL 例                        | 主な利用ロール           | 機能概要                               |
 | ------- | ---------------------------------- | ----------------- | ---------------------------------- |
-| **S01** | `/login`                           | 全ロール              | Magic‑link ログインフォームとリンク送信結果表示      |
-| **S02** | `/dashboard`                       | Organizer / Staff | 公演ダッシュボード (作品リスト・残席・売上サマリ)         |
-| **S03** | `/events/new`                      | Organizer / Staff | 作品 (Event) 登録フォーム                  |
-| **S04** | `/events/:id/edit`                 | Organizer / Staff | 作品詳細・編集・削除                         |
-| **S05** | `/venues`                          | Organizer / Staff | 会場 (Venue) 一覧・登録・編集                |
-| **S06** | `/performances/new`                | Organizer / Staff | 上演回 (Performance) 作成フォーム (作品・会場選択) |
-| **S07** | `/performances/:id`                | Organizer / Staff | 上演回詳細 (残席・券種別売上・CSV ダウンロード)        |
-| **S08** | `/ticket-types`                    | Organizer / Staff | 券種 (TicketType) 一覧・登録・編集           |
+| **S01** | `/login`                           | 全ロール           | Magic‑link ログインフォームとリンク送信結果表示      |
+| **S02** | `/home`                            | Organizer / Staff | ホーム（公演一覧・クイックアクション・最近の活動） |
+| **S03** | `/events/new`                      | Organizer / Staff | 新しい公演の登録フォーム                  |
+| **S04** | `/events/:id/edit`                 | Organizer / Staff | 公演詳細・編集・削除                         |
+| **S05** | `/venues`                          | Organizer / Staff | 会場マスター管理（一覧・登録・編集）                |
+| **S06** | `/performances/new`                | Organizer / Staff | ステージ追加フォーム（公演へのステージ設定） |
+| **S07** | `/performances/:id`                | Organizer / Staff | ステージ詳細 (残席・券種別売上・CSV ダウンロード)        |
+| **S08** | `/ticket-types`                    | Organizer / Staff | 券種・価格設定管理（一覧・登録・編集）            |
 | **S09** | `/tickets/:performanceId/purchase` | Customer          | チケット購入フォーム (券種・枚数入力)               |
 | **S10** | `/orders/complete`                 | Customer          | 予約完了画面 (QR 表示、メール送信案内)             |
 | **S11** | `/mypage/orders`                   | Customer          | 購入履歴一覧・QR 再表示                      |

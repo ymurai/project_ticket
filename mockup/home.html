@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ダッシュボード - チケット管理システム</title>
+    <title>ホーム - チケット管理システム</title>
     <style>
         * {
             box-sizing: border-box;
@@ -367,79 +367,40 @@
     <div class="container">
         <!-- ヘッダー -->
         <div class="header">
-            <h1>ダッシュボード</h1>
-            <div class="breadcrumb">ホーム > ダッシュボード</div>
-        </div>
-
-        <!-- ウェルカムメッセージ -->
-        <div class="welcome-message">
-            <h2>おかえりなさい、田中さん</h2>
-            <p>今日の売上状況と最新の活動をチェックしましょう</p>
-        </div>
-
-        <!-- 統計カード -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value">15</div>
-                <div class="stat-label">総作品数</div>
-                <div class="stat-change positive">+2 今月</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">42</div>
-                <div class="stat-label">上演回数</div>
-                <div class="stat-change positive">+8 今月</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">¥2,450,000</div>
-                <div class="stat-label">今月の売上</div>
-                <div class="stat-change positive">+12.5%</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">1,247</div>
-                <div class="stat-label">販売チケット数</div>
-                <div class="stat-change positive">+156 今週</div>
-            </div>
+            <h1>ホーム</h1>
+            <div class="breadcrumb">ホーム</div>
         </div>
 
         <!-- クイックアクション -->
         <div class="quick-actions">
             <a href="event/new.html" class="action-card">
                 <div class="action-icon">🎭</div>
-                <div class="action-title">新しい作品を登録</div>
-                <div class="action-description">新規作品の基本情報を登録</div>
-            </a>
-            <a href="performance/new.html" class="action-card">
-                <div class="action-icon">📅</div>
-                <div class="action-title">上演回を追加</div>
-                <div class="action-description">既存作品の上演回を設定</div>
+                <div class="action-title">新しい公演を登録</div>
+                <div class="action-description">公演の基本情報を登録</div>
             </a>
             <a href="venue/index.html" class="action-card">
                 <div class="action-icon">🏛️</div>
                 <div class="action-title">会場を管理</div>
                 <div class="action-description">会場マスターの登録・編集</div>
             </a>
-            <a href="ticket-type/index.html" class="action-card">
-                <div class="action-icon">🎫</div>
-                <div class="action-title">券種を設定</div>
-                <div class="action-description">作品の券種・価格設定</div>
-            </a>
         </div>
 
-        <!-- 作品リスト -->
+        <!-- 公演リスト -->
         <div class="section">
             <div class="section-header">
-                <h2 class="section-title">作品一覧</h2>
-                <a href="event/new.html" class="btn btn-success">+ 新しい作品を登録</a>
+                <h2 class="section-title">公演一覧</h2>
+                <a href="event/new.html" class="btn btn-success">+ 新しい公演を登録</a>
             </div>
             <div class="section-content">
                 <table class="event-table">
                     <thead>
                         <tr>
-                            <th>作品名</th>
+                            <th>公演名</th>
                             <th>ジャンル</th>
-                            <th>上演回数</th>
+                            <th>上演期間</th>
+                            <th>会場</th>
+                            <th>ステージ数</th>
                             <th>販売状況</th>
-                            <th>売上</th>
                             <th>状態</th>
                             <th>操作</th>
                         </tr>
@@ -447,22 +408,44 @@
                     <tbody>
                         <tr>
                             <td>
+                                <strong>夏の夜の夢</strong><br>
+                                <small style="color: #7f8c8d;">新劇座</small>
+                            </td>
+                            <td>演劇</td>
+                            <td>7/20 - 7/25</td>
+                            <td>東京芸術劇場</td>
+                            <td class="number-highlight">3ステージ</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 45%;">45%</div>
+                                </div>
+                                <small>540/1,200席</small>
+                            </td>
+                            <td><span class="status-badge status-active">販売中</span></td>
+                            <td>
+                                <a href="event/edit.html" class="btn btn-primary btn-sm">編集</a>
+                                <a href="performance/new.html" class="btn btn-secondary btn-sm">ステージ追加</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
                                 <strong>ハムレット</strong><br>
                                 <small style="color: #7f8c8d;">シェイクスピア劇団</small>
                             </td>
                             <td>演劇</td>
-                            <td class="number-highlight">5回</td>
+                            <td>7/25 - 8/5</td>
+                            <td>新国立劇場</td>
+                            <td class="number-highlight">5ステージ</td>
                             <td>
                                 <div class="progress-bar">
                                     <div class="progress-fill" style="width: 68%;">68%</div>
                                 </div>
                                 <small>2,834/4,170席</small>
                             </td>
-                            <td class="currency">¥18,450,000</td>
                             <td><span class="status-badge status-active">販売中</span></td>
                             <td>
                                 <a href="event/edit.html" class="btn btn-primary btn-sm">編集</a>
-                                <a href="performance/new.html" class="btn btn-secondary btn-sm">上演回追加</a>
+                                <a href="performance/new.html" class="btn btn-secondary btn-sm">ステージ追加</a>
                             </td>
                         </tr>
                         <tr>
@@ -471,18 +454,19 @@
                                 <small style="color: #7f8c8d;">劇団四季</small>
                             </td>
                             <td>ミュージカル</td>
-                            <td class="number-highlight">12回</td>
+                            <td>8/1 - 8/31</td>
+                            <td>四季劇場</td>
+                            <td class="number-highlight">12ステージ</td>
                             <td>
                                 <div class="progress-bar">
                                     <div class="progress-fill" style="width: 85%;">85%</div>
                                 </div>
                                 <small>8,500/10,000席</small>
                             </td>
-                            <td class="currency">¥85,600,000</td>
                             <td><span class="status-badge status-active">販売中</span></td>
                             <td>
                                 <a href="event/edit.html" class="btn btn-primary btn-sm">編集</a>
-                                <a href="performance/new.html" class="btn btn-secondary btn-sm">上演回追加</a>
+                                <a href="performance/new.html" class="btn btn-secondary btn-sm">ステージ追加</a>
                             </td>
                         </tr>
                         <tr>
@@ -491,38 +475,19 @@
                                 <small style="color: #7f8c8d;">東宝</small>
                             </td>
                             <td>ミュージカル</td>
-                            <td class="number-highlight">8回</td>
+                            <td>9/1 - 9/20</td>
+                            <td>シアタークリエ</td>
+                            <td class="number-highlight">8ステージ</td>
                             <td>
                                 <div class="progress-bar">
                                     <div class="progress-fill" style="width: 92%;">92%</div>
                                 </div>
                                 <small>7,360/8,000席</small>
                             </td>
-                            <td class="currency">¥58,880,000</td>
-                            <td><span class="status-badge status-active">販売中</span></td>
-                            <td>
-                                <a href="event/edit.html" class="btn btn-primary btn-sm">編集</a>
-                                <a href="performance/new.html" class="btn btn-secondary btn-sm">上演回追加</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <strong>夏の夜の夢</strong><br>
-                                <small style="color: #7f8c8d;">新劇座</small>
-                            </td>
-                            <td>演劇</td>
-                            <td class="number-highlight">3回</td>
-                            <td>
-                                <div class="progress-bar">
-                                    <div class="progress-fill" style="width: 45%;">45%</div>
-                                </div>
-                                <small>540/1,200席</small>
-                            </td>
-                            <td class="currency">¥2,430,000</td>
                             <td><span class="status-badge status-upcoming">準備中</span></td>
                             <td>
                                 <a href="event/edit.html" class="btn btn-primary btn-sm">編集</a>
-                                <a href="performance/new.html" class="btn btn-secondary btn-sm">上演回追加</a>
+                                <a href="performance/new.html" class="btn btn-secondary btn-sm">ステージ追加</a>
                             </td>
                         </tr>
                         <tr>
@@ -531,14 +496,15 @@
                                 <small style="color: #7f8c8d;">バレエ団</small>
                             </td>
                             <td>ダンス</td>
-                            <td class="number-highlight">6回</td>
+                            <td>6/15 - 6/30</td>
+                            <td>東京文化会館</td>
+                            <td class="number-highlight">6ステージ</td>
                             <td>
                                 <div class="progress-bar">
                                     <div class="progress-fill" style="width: 100%;">完売</div>
                                 </div>
                                 <small>4,800/4,800席</small>
                             </td>
-                            <td class="currency">¥36,000,000</td>
                             <td><span class="status-badge status-ended">終了</span></td>
                             <td>
                                 <a href="performance/detail.html" class="btn btn-primary btn-sm">詳細</a>
@@ -555,13 +521,13 @@
             <div class="section">
                 <div class="section-header">
                     <h2 class="section-title">今後の上演予定</h2>
-                    <a href="performance/new.html" class="btn btn-success btn-sm">+ 上演回追加</a>
+                    <a href="performance/new.html" class="btn btn-success btn-sm">+ ステージ追加</a>
                 </div>
                 <div class="section-content">
                     <table class="event-table">
                         <thead>
                             <tr>
-                                <th>作品名</th>
+                                <th>公演名</th>
                                 <th>日時</th>
                                 <th>会場</th>
                                 <th>販売率</th>
@@ -643,14 +609,14 @@
                         <div class="activity-item">
                             <div class="activity-icon">📝</div>
                             <div class="activity-content">
-                                <div class="activity-title">上演回追加</div>
+                                <div class="activity-title">ステージ追加</div>
                                 <div class="activity-time">オペラ座の怪人 8/15公演 - 1時間前</div>
                             </div>
                         </div>
                         <div class="activity-item">
                             <div class="activity-icon">🎭</div>
                             <div class="activity-content">
-                                <div class="activity-title">新作品登録</div>
+                                <div class="activity-title">新しい公演を登録</div>
                                 <div class="activity-time">夏の夜の夢を登録 - 3時間前</div>
                             </div>
                         </div>
@@ -693,7 +659,7 @@
 
         // 初期表示時にデータ読み込み
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('ダッシュボードが読み込まれました');
+            console.log('ホームが読み込まれました');
         });
     </script>
 </body>

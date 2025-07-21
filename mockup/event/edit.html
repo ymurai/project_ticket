@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>作品詳細・編集 - チケット管理システム</title>
+    <title>公演詳細・編集 - チケット管理システム</title>
     <style>
         * {
             box-sizing: border-box;
@@ -187,7 +187,7 @@
 
         .info-label {
             font-weight: 600;
-            min-width: 120px;
+            min-width: 10rem;
             color: #2c3e50;
         }
 
@@ -370,20 +370,20 @@
     <div class="container">
         <div class="header">
             <h1>「夏の夜の夢」詳細・編集</h1>
-            <div class="breadcrumb">ダッシュボード > 作品管理 > 作品詳細</div>
+            <div class="breadcrumb">ホーム > 公演管理 > 公演詳細</div>
         </div>
 
         <div class="tabs">
             <button class="tab active" onclick="showTab('overview')">概要</button>
             <button class="tab" onclick="showTab('edit')">編集</button>
-            <button class="tab" onclick="showTab('performances')">上演回</button>
+            <button class="tab" onclick="showTab('performances')">ステージ</button>
             <button class="tab" onclick="showTab('settings')">設定</button>
         </div>
 
         <div id="overview" class="tab-content active">
             <div class="info-card">
                 <div class="info-row">
-                    <div class="info-label">作品名:</div>
+                    <div class="info-label">公演名:</div>
                     <div class="info-value">夏の夜の夢</div>
                 </div>
                 <div class="info-row">
@@ -395,12 +395,12 @@
                     <div class="info-value">120分</div>
                 </div>
                 <div class="info-row">
-                    <div class="info-label">演出者:</div>
-                    <div class="info-value">田中太郎</div>
+                    <div class="info-label">上演期間:</div>
+                    <div class="info-value">2025年3月15日 - 2025年3月16日</div>
                 </div>
                 <div class="info-row">
-                    <div class="info-label">主な出演者:</div>
-                    <div class="info-value">佐藤花子、鈴木一郎、高橋美咲</div>
+                    <div class="info-label">出演者・スタッフ等:</div>
+                    <div class="info-value">演出: 田中太郎<br>出演: 佐藤花子、鈴木一郎、高橋美咲</div>
                 </div>
                 <div class="info-row">
                     <div class="info-label">ステータス:</div>
@@ -419,7 +419,7 @@
             </div>
 
             <div class="form-group">
-                <label>作品概要</label>
+                <label>公演概要</label>
                 <div class="info-card">
                     シェイクスピアの名作「夏の夜の夢」を現代的な演出で上演します。妖精の森で繰り広げられる恋愛模様を、美しい音楽と幻想的な舞台美術でお楽しみください。
                 </div>
@@ -428,7 +428,38 @@
             <div class="form-group">
                 <label>ポスター画像</label>
                 <div>
-                    <img src="https://via.placeholder.com/300x400/3498db/ffffff?text=夏の夜の夢" alt="作品ポスター" class="current-image">
+                    <img src="https://via.placeholder.com/300x400/3498db/ffffff?text=夏の夜の夢" alt="公演ポスター" class="current-image">
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-row">
+                    <div class="info-label">公式サイト:</div>
+                    <div class="info-value"><a href="https://example.com/midsummer" target="_blank" style="color: #3498db;">https://example.com/midsummer</a></div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">SNS・宣伝情報:</div>
+                    <div class="info-value">Twitter: @midsummer_dream<br>Instagram: @midsummer_official</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">年齢制限:</div>
+                    <div class="info-value">なし</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">言語:</div>
+                    <div class="info-value">日本語</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">字幕:</div>
+                    <div class="info-value">なし</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">バリアフリー対応:</div>
+                    <div class="info-value">対応あり</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">備考・特記事項:</div>
+                    <div class="info-value">車椅子でのご来場も可能です。事前にご連絡ください。</div>
                 </div>
             </div>
         </div>
@@ -436,12 +467,12 @@
         <div id="edit" class="tab-content">
             <form id="editForm">
                 <div class="form-group">
-                    <label for="eventName">作品名<span class="required">*</span></label>
+                    <label for="eventName">公演名<span class="required">*</span></label>
                     <input type="text" id="eventName" name="eventName" value="夏の夜の夢" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="eventDescription">作品概要<span class="required">*</span></label>
+                    <label for="eventDescription">公演概要<span class="required">*</span></label>
                     <textarea id="eventDescription" name="eventDescription" required>シェイクスピアの名作「夏の夜の夢」を現代的な演出で上演します。妖精の森で繰り広げられる恋愛模様を、美しい音楽と幻想的な舞台美術でお楽しみください。</textarea>
                 </div>
 
@@ -461,6 +492,18 @@
                     <div class="form-group">
                         <label for="duration">上演時間（分）<span class="required">*</span></label>
                         <input type="number" id="duration" name="duration" value="120" min="1" max="600" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="performanceStart">上演期間（開始日）<span class="required">*</span></label>
+                        <input type="date" id="performanceStart" name="performanceStart" value="2025-03-15" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="performanceEnd">上演期間（終了日）<span class="required">*</span></label>
+                        <input type="date" id="performanceEnd" name="performanceEnd" value="2025-03-16" required>
                     </div>
                 </div>
 
@@ -552,7 +595,7 @@ Instagram: @midsummer_official</textarea>
         </div>
 
         <div id="performances" class="tab-content">
-            <h3>上演回一覧</h3>
+            <h3>ステージ一覧</h3>
             <div class="performance-list">
                 <div class="performance-item">
                     <div class="performance-info">
@@ -607,12 +650,12 @@ Instagram: @midsummer_official</textarea>
             </div>
             
             <div class="button-group">
-                <a href="/performances/new" class="btn btn-success">新しい上演回を追加</a>
+                <a href="../performance/new.html" class="btn btn-success">新しいステージを追加</a>
             </div>
         </div>
 
         <div id="settings" class="tab-content">
-            <h3>作品設定</h3>
+            <h3>公演設定</h3>
             
             <div class="form-group">
                 <label for="status">公開ステータス</label>
@@ -621,7 +664,7 @@ Instagram: @midsummer_official</textarea>
                     <option value="active" selected>公開中</option>
                     <option value="archived">アーカイブ</option>
                 </select>
-                <div class="help-text">公開中の作品はチケット販売が可能です</div>
+                <div class="help-text">公開中の公演はチケット販売が可能です</div>
             </div>
 
             <div class="form-group">
@@ -641,7 +684,7 @@ Instagram: @midsummer_official</textarea>
             <div class="danger-zone">
                 <h3>危険な操作</h3>
                 <p>以下の操作は取り消すことができません。慎重に行ってください。</p>
-                <button type="button" class="btn btn-danger" onclick="confirmDelete()">この作品を削除</button>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">この公演を削除</button>
             </div>
 
             <div class="button-group">
@@ -664,7 +707,7 @@ Instagram: @midsummer_official</textarea>
 
         document.getElementById('editForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('作品情報が正常に更新されました。');
+            alert('公演情報が正常に更新されました。');
             showTab('overview');
         });
 
@@ -677,9 +720,9 @@ Instagram: @midsummer_official</textarea>
         });
 
         function confirmDelete() {
-            if (confirm('この作品を削除してもよろしいですか？\n\n注意: この操作は取り消すことができません。\n関連する上演回、チケット販売データもすべて削除されます。')) {
+            if (confirm('この公演を削除してもよろしいですか？\n\n注意: この操作は取り消すことができません。\n関連するステージ、チケット販売データもすべて削除されます。')) {
                 if (confirm('本当に削除しますか？最後の確認です。')) {
-                    alert('作品「夏の夜の夢」が削除されました。\nダッシュボードにリダイレクトします。');
+                    alert('公演「夏の夜の夢」が削除されました。\nホームにリダイレクトします。');
                 }
             }
         }

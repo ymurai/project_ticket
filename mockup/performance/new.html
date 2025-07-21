@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>上演回登録フォーム - チケット管理システム</title>
+    <title>ステージ登録フォーム - チケット管理システム</title>
     <style>
         * {
             box-sizing: border-box;
@@ -185,20 +185,20 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>上演回登録フォーム</h1>
-            <div class="breadcrumb"><a href="../dashboard.html" style="color: #3498db; text-decoration: none;">ダッシュボード</a> > 上演回管理 > 新規上演回登録</div>
+            <h1>ステージ登録フォーム</h1>
+            <div class="breadcrumb"><a href="../home.html" style="color: #3498db; text-decoration: none;">ホーム</a> > ステージ管理 > 新規ステージ登録</div>
         </div>
 
         <div class="form-container">
             <form id="performanceForm">
-                <!-- 作品・会場選択 -->
+                <!-- 公演・会場選択 -->
                 <div class="section-title">基本情報</div>
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="eventId">作品<span class="required">*</span></label>
+                        <label for="eventId">公演<span class="required">*</span></label>
                         <select id="eventId" name="eventId" required>
-                            <option value="">作品を選択してください</option>
+                            <option value="">公演を選択してください</option>
                             <option value="1">ハムレット（シェイクスピア劇団）</option>
                             <option value="2">ライオンキング（劇団四季）</option>
                             <option value="3">オペラ座の怪人（東宝）</option>
@@ -219,7 +219,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="performanceTitle">上演回タイトル</label>
+                    <label for="performanceTitle">ステージタイトル</label>
                     <input type="text" id="performanceTitle" name="performanceTitle" placeholder="例：開幕記念公演、千秋楽など（省略可）">
                     <div class="help-text">特別な回の場合のみ入力してください</div>
                 </div>
@@ -243,7 +243,7 @@
                     <div class="form-group">
                         <label for="endTime">終演予定時間</label>
                         <input type="time" id="endTime" name="endTime">
-                        <div class="help-text">作品の上演時間から自動計算されます</div>
+                        <div class="help-text">公演の上演時間から自動計算されます</div>
                     </div>
                 </div>
 
@@ -295,7 +295,7 @@
                             <a href="/ticket-types" style="color: #3498db; text-decoration: none;">券種の管理（新規作成・編集・削除）</a>
                         </div>
                     </div>
-                    <div class="help-text">この上演回で販売する券種を選択してください</div>
+                    <div class="help-text">このステージで販売する券種を選択してください</div>
                 </div>
 
                 <!-- 販売設定 -->
@@ -329,13 +329,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="performanceNote">上演回備考</label>
-                    <textarea id="performanceNote" name="performanceNote" placeholder="この上演回に関する特別な情報、出演者変更、演出変更など"></textarea>
+                    <label for="performanceNote">ステージ備考</label>
+                    <textarea id="performanceNote" name="performanceNote" placeholder="このステージに関する特別な情報、出演者変更、演出変更など"></textarea>
                 </div>
 
                 <div class="button-group">
-                    <a href="../dashboard.html" class="btn btn-secondary">キャンセル</a>
-                    <button type="submit" class="btn btn-primary">上演回を登録</button>
+                    <a href="../home.html" class="btn btn-secondary">キャンセル</a>
+                    <button type="submit" class="btn btn-primary">ステージを登録</button>
                 </div>
             </form>
         </div>
@@ -349,7 +349,7 @@
             const eventSelect = document.getElementById('eventId');
             
             if (startTime && eventSelect.value) {
-                // 実際の実装では、選択された作品の上演時間を取得して計算
+                // 実際の実装では、選択された公演の上演時間を取得して計算
                 // ここではサンプルとして2時間30分後に設定
                 const start = new Date('2000-01-01 ' + startTime);
                 start.setMinutes(start.getMinutes() + 150); // 2時間30分
@@ -393,7 +393,7 @@
                 return;
             }
             
-            alert(`上演回が正常に登録されました。\n\n` +
+            alert(`ステージが正常に登録されました。\n\n` +
                   `選択された券種: ${selectedTicketTypes.length}種類\n\n` +
                   `次のステップ：\n` +
                   `1. チケット販売開始の準備\n` +

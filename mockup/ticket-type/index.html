@@ -302,17 +302,17 @@
     <div class="container">
         <div class="header">
             <h1>券種管理</h1>
-            <div class="breadcrumb"><a href="../dashboard.html" style="color: #3498db; text-decoration: none;">ダッシュボード</a> > 作品管理 > ハムレット > 券種管理</div>
+            <div class="breadcrumb"><a href="../home.html" style="color: #3498db; text-decoration: none;">ホーム</a> > 公演管理 > ハムレット > 券種管理</div>
             
             <!-- 公演情報 -->
             <div style="background-color: #e3f2fd; border: 1px solid #bbdefb; border-radius: 6px; padding: 15px; margin: 15px 0;">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                     <h3 style="color: #1565c0; margin: 0;">設定対象公演</h3>
-                    <a href="/events/1" style="color: #3498db; text-decoration: none; font-size: 14px;">作品詳細を見る</a>
+                    <a href="/events/1" style="color: #3498db; text-decoration: none; font-size: 14px;">公演詳細を見る</a>
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; font-size: 14px;">
                     <div>
-                        <span style="color: #666; font-weight: 600;">作品名:</span>
+                        <span style="color: #666; font-weight: 600;">公演名:</span>
                         <span style="color: #1976d2; font-weight: 600;">ハムレット</span>
                     </div>
                     <div>
@@ -332,7 +332,7 @@
 
             <div class="header-actions">
                 <div>
-                    <span style="color: #7f8c8d; font-size: 14px;">この作品で使用する券種の設定を行います</span>
+                    <span style="color: #7f8c8d; font-size: 14px;">この公演で使用する券種の設定を行います</span>
                 </div>
                 <button class="btn btn-success" onclick="showAddForm()">+ 新しい券種を追加</button>
             </div>
@@ -358,7 +358,7 @@
                     <div class="form-group">
                         <label for="defaultSeats">デフォルト席数</label>
                         <input type="number" id="defaultSeats" name="defaultSeats" min="1" placeholder="200">
-                        <div class="help-text">上演回作成時のデフォルト値（後で変更可能）</div>
+                        <div class="help-text">ステージ作成時のデフォルト値（後で変更可能）</div>
                     </div>
 
                     <div class="form-group">
@@ -404,7 +404,7 @@
         <!-- 券種一覧 -->
         <div class="section">
             <div class="section-header">
-                <h2 class="section-title">この作品の券種一覧</h2>
+                <h2 class="section-title">この公演の券種一覧</h2>
                 <span style="color: #7f8c8d; font-size: 14px;">5件の券種が設定されています</span>
             </div>
             <div class="section-content">
@@ -415,7 +415,7 @@
                             <th>価格</th>
                             <th>カテゴリ</th>
                             <th>デフォルト席数</th>
-                            <th>上演回での使用</th>
+                            <th>ステージでの使用</th>
                             <th>状態</th>
                             <th>表示順</th>
                             <th>操作</th>
@@ -514,7 +514,7 @@
                     <div class="form-group">
                         <label for="editDefaultSeats">デフォルト席数</label>
                         <input type="number" id="editDefaultSeats" name="editDefaultSeats" min="1">
-                        <div class="help-text">上演回作成時のデフォルト値（後で変更可能）</div>
+                        <div class="help-text">ステージ作成時のデフォルト値（後で変更可能）</div>
                     </div>
 
                     <div class="form-group">
@@ -552,8 +552,8 @@
 
                 <!-- 使用状況表示 -->
                 <div id="usageInfo" class="usage-info" style="display: none;">
-                    <strong>使用状況:</strong> この券種は現在この作品の <span id="usageCount">0</span> 回の上演回で使用されています。
-                    価格変更は新規作成の上演回のみに適用されます。
+                    <strong>使用状況:</strong> この券種は現在この公演の <span id="usageCount">0</span> 回のステージで使用されています。
+                    価格変更は新規作成のステージのみに適用されます。
                 </div>
 
                 <div class="button-group">
@@ -636,7 +636,7 @@
             if (!ticketType) return;
 
             if (ticketType.usageCount > 0) {
-                alert(`この券種「${ticketType.name}」は現在この作品の ${ticketType.usageCount} 回の上演回で使用されているため削除できません。\n\n削除するには、まず使用している上演回から券種を外してください。`);
+                alert(`この券種「${ticketType.name}」は現在この公演の ${ticketType.usageCount} 回のステージで使用されているため削除できません。\n\n削除するには、まず使用しているステージから券種を外してください。`);
                 return;
             }
 

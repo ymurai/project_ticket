@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>作品登録フォーム - チケット管理システム</title>
+    <title>公演登録フォーム - チケット管理システム</title>
     <style>
         * {
             box-sizing: border-box;
@@ -188,20 +188,20 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>作品登録フォーム</h1>
-            <div class="breadcrumb"><a href="../dashboard.html" style="color: #3498db; text-decoration: none;">ダッシュボード</a> > 作品管理 > 新規作品登録</div>
+            <h1>公演登録フォーム</h1>
+            <div class="breadcrumb"><a href="../home.html" style="color: #3498db; text-decoration: none;">ホーム</a> > 公演管理 > 新規公演登録</div>
         </div>
 
         <div class="form-container">
             <form id="eventForm">
                 <div class="form-group">
-                    <label for="eventName">作品名<span class="required">*</span></label>
+                    <label for="eventName">公演名<span class="required">*</span></label>
                     <input type="text" id="eventName" name="eventName" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="eventDescription">作品概要<span class="required">*</span></label>
-                    <textarea id="eventDescription" name="eventDescription" placeholder="作品の概要、あらすじ、見どころなどを記入してください" required></textarea>
+                    <label for="eventDescription">公演概要<span class="required">*</span></label>
+                    <textarea id="eventDescription" name="eventDescription" placeholder="公演の概要、あらすじ、見どころなどを記入してください" required></textarea>
                 </div>
 
                 <div class="form-row">
@@ -221,6 +221,18 @@
                     <div class="form-group">
                         <label for="duration">上演時間（分）<span class="required">*</span></label>
                         <input type="number" id="duration" name="duration" min="1" max="600" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="performanceStart">上演期間（開始日）<span class="required">*</span></label>
+                        <input type="date" id="performanceStart" name="performanceStart" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="performanceEnd">上演期間（終了日）<span class="required">*</span></label>
+                        <input type="date" id="performanceEnd" name="performanceEnd" required>
                     </div>
                 </div>
 
@@ -300,8 +312,8 @@
                 </div>
 
                 <div class="button-group">
-                    <a href="../dashboard.html" class="btn btn-secondary">キャンセル</a>
-                    <button type="submit" class="btn btn-primary">作品を登録</button>
+                    <a href="../home.html" class="btn btn-secondary">キャンセル</a>
+                    <button type="submit" class="btn btn-primary">公演を登録</button>
                 </div>
             </form>
         </div>
@@ -310,7 +322,7 @@
     <script>
         document.getElementById('eventForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            alert('作品が正常に登録されました。\n\n次のステップ：\n1. 会場情報の設定\n2. 上演回の作成\n3. 券種の設定');
+            alert('公演が正常に登録されました。\n\n次のステップ：\n1. 会場情報の設定\n2. ステージの作成\n3. 券種の設定');
         });
 
         document.getElementById('poster').addEventListener('change', function(e) {

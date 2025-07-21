@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>上演回編集フォーム - チケット管理システム</title>
+    <title>ステージ編集フォーム - チケット管理システム</title>
     <style>
         * {
             box-sizing: border-box;
@@ -255,8 +255,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>上演回編集フォーム</h1>
-            <div class="breadcrumb"><a href="../dashboard.html" style="color: #3498db; text-decoration: none;">ダッシュボード</a> > 上演回管理 > <a href="detail.html" style="color: #3498db; text-decoration: none;">ハムレット 2024年7月25日 19:00</a> > 編集</div>
+            <h1>ステージ編集フォーム</h1>
+            <div class="breadcrumb"><a href="../home.html" style="color: #3498db; text-decoration: none;">ホーム</a> > ステージ管理 > <a href="detail.html" style="color: #3498db; text-decoration: none;">ハムレット 2024年7月25日 19:00</a> > 編集</div>
         </div>
 
         <div class="form-container">
@@ -299,11 +299,11 @@
                 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="eventId">作品<span class="required">*</span></label>
+                        <label for="eventId">公演<span class="required">*</span></label>
                         <select id="eventId" name="eventId" required class="disabled-input" disabled>
                             <option value="1" selected>ハムレット（シェイクスピア劇団）</option>
                         </select>
-                        <div class="help-text">作品は変更できません</div>
+                        <div class="help-text">公演は変更できません</div>
                     </div>
 
                     <div class="form-group">
@@ -319,7 +319,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="performanceTitle">上演回タイトル</label>
+                    <label for="performanceTitle">ステージタイトル</label>
                     <input type="text" id="performanceTitle" name="performanceTitle" value="" placeholder="例：開幕記念公演、千秋楽など（省略可）">
                 </div>
 
@@ -427,12 +427,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="performanceNote">上演回備考</label>
-                    <textarea id="performanceNote" name="performanceNote" placeholder="この上演回に関する特別な情報、出演者変更、演出変更など"></textarea>
+                    <label for="performanceNote">ステージ備考</label>
+                    <textarea id="performanceNote" name="performanceNote" placeholder="このステージに関する特別な情報、出演者変更、演出変更など"></textarea>
                 </div>
 
                 <div class="button-group">
-                    <button type="button" class="btn btn-danger" onclick="confirmDelete()">上演回を削除</button>
+                    <button type="button" class="btn btn-danger" onclick="confirmDelete()">ステージを削除</button>
                     <a href="detail.html" class="btn btn-secondary">キャンセル</a>
                     <button type="submit" class="btn btn-primary">変更を保存</button>
                 </div>
@@ -443,9 +443,9 @@
     <script>
 
         function confirmDelete() {
-            if (confirm('この上演回を完全に削除してもよろしいですか？\n\n警告:\n• 販売済みチケットも含めて全てのデータが削除されます\n• この操作は取り消せません\n• 顧客への返金処理は別途必要です')) {
+            if (confirm('このステージを完全に削除してもよろしいですか？\n\n警告:\n• 販売済みチケットも含めて全てのデータが削除されます\n• この操作は取り消せません\n• 顧客への返金処理は別途必要です')) {
                 if (confirm('本当に削除しますか？\n\n最終確認です。「OK」をクリックすると削除が実行されます。')) {
-                    alert('上演回削除機能は実装中です。\n\n実際の削除処理では:\n1. 顧客への通知メール送信\n2. 返金処理の実行\n3. データベースからの削除\nが順次実行されます。');
+                    alert('ステージ削除機能は実装中です。\n\n実際の削除処理では:\n1. 顧客への通知メール送信\n2. 返金処理の実行\n3. データベースからの削除\nが順次実行されます。');
                 }
             }
         }
@@ -489,8 +489,8 @@
         document.getElementById('performanceEditForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            if (confirm('上演回の変更を保存しますか？\n\n注意:\n• 変更内容は新規注文から適用されます\n• 既存の注文には影響しません')) {
-                alert('上演回が正常に更新されました。\n\n変更内容:\n• 基本情報の更新\n• 日時・販売設定の更新\n\n既存の注文には影響ありません。');
+            if (confirm('ステージの変更を保存しますか？\n\n注意:\n• 変更内容は新規注文から適用されます\n• 既存の注文には影響しません')) {
+                alert('ステージが正常に更新されました。\n\n変更内容:\n• 基本情報の更新\n• 日時・販売設定の更新\n\n既存の注文には影響ありません。');
             }
         });
     </script>
