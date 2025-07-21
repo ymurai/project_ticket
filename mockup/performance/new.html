@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上演回登録フォーム - チケット管理システム</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-left: 4px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .form-row-3 {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row-3 .form-group {
+            flex: 1;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        .help-text {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .section-divider {
+            border-top: 2px solid #eee;
+            margin: 40px 0 30px 0;
+            padding-top: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #bdc3c7;
+        }
+
+        .datetime-input {
+            position: relative;
+        }
+
+
+        @media (max-width: 768px) {
+            .form-row,
+            .form-row-3 {
+                flex-direction: column;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>上演回登録フォーム</h1>
+            <div class="breadcrumb"><a href="../dashboard.html" style="color: #3498db; text-decoration: none;">ダッシュボード</a> > 上演回管理 > 新規上演回登録</div>
+        </div>
+
+        <div class="form-container">
+            <form id="performanceForm">
+                <!-- 作品・会場選択 -->
+                <div class="section-title">基本情報</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventId">作品<span class="required">*</span></label>
+                        <select id="eventId" name="eventId" required>
+                            <option value="">作品を選択してください</option>
+                            <option value="1">ハムレット（シェイクスピア劇団）</option>
+                            <option value="2">ライオンキング（劇団四季）</option>
+                            <option value="3">オペラ座の怪人（東宝）</option>
+                            <option value="4">キャッツ（劇団四季）</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="venueId">会場<span class="required">*</span></label>
+                        <select id="venueId" name="venueId" required>
+                            <option value="">会場を選択してください</option>
+                            <option value="1">東京芸術劇場 プレイハウス（834席）</option>
+                            <option value="2">新国立劇場 中劇場（1,038席）</option>
+                            <option value="3">シアタークリエ（588席）</option>
+                            <option value="4">青山劇場（1,200席）</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="performanceTitle">上演回タイトル</label>
+                    <input type="text" id="performanceTitle" name="performanceTitle" placeholder="例：開幕記念公演、千秋楽など（省略可）">
+                    <div class="help-text">特別な回の場合のみ入力してください</div>
+                </div>
+
+                <!-- 日時設定 -->
+                <div class="section-divider">
+                    <div class="section-title">日時設定</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="performanceDate">公演日<span class="required">*</span></label>
+                        <input type="date" id="performanceDate" name="performanceDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="startTime">開演時間<span class="required">*</span></label>
+                        <input type="time" id="startTime" name="startTime" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="endTime">終演予定時間</label>
+                        <input type="time" id="endTime" name="endTime">
+                        <div class="help-text">作品の上演時間から自動計算されます</div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="doorOpenTime">開場時間</label>
+                        <input type="time" id="doorOpenTime" name="doorOpenTime">
+                        <div class="help-text">通常、開演の30分前に設定</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="saleStartDate">販売開始日時<span class="required">*</span></label>
+                        <input type="datetime-local" id="saleStartDate" name="saleStartDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="saleEndDate">販売終了日時<span class="required">*</span></label>
+                        <input type="datetime-local" id="saleEndDate" name="saleEndDate" required>
+                    </div>
+                </div>
+
+                <!-- 券種選択 -->
+                <div class="section-divider">
+                    <div class="section-title">券種設定</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="ticketTypes">利用可能な券種<span class="required">*</span></label>
+                    <div style="border: 2px solid #ddd; border-radius: 4px; padding: 15px; background-color: #f8f9fa;">
+                        <div style="margin-bottom: 15px;">
+                            <label style="display: flex; align-items: center; margin-bottom: 8px;">
+                                <input type="checkbox" name="selectedTicketTypes[]" value="1" style="margin-right: 10px; width: auto; flex-shrink: 0;" checked>
+                                <span style="flex: 1;">S席 - ¥8,000（200席）</span>
+                            </label>
+                            <label style="display: flex; align-items: center; margin-bottom: 8px;">
+                                <input type="checkbox" name="selectedTicketTypes[]" value="2" style="margin-right: 10px; width: auto; flex-shrink: 0;" checked>
+                                <span style="flex: 1;">A席 - ¥6,500（300席）</span>
+                            </label>
+                            <label style="display: flex; align-items: center; margin-bottom: 8px;">
+                                <input type="checkbox" name="selectedTicketTypes[]" value="3" style="margin-right: 10px; width: auto; flex-shrink: 0;" checked>
+                                <span style="flex: 1;">B席 - ¥4,500（250席）</span>
+                            </label>
+                            <label style="display: flex; align-items: center;">
+                                <input type="checkbox" name="selectedTicketTypes[]" value="4" style="margin-right: 10px; width: auto; flex-shrink: 0;" checked>
+                                <span style="flex: 1;">学生席 - ¥2,500（84席）</span>
+                            </label>
+                        </div>
+                        <div style="font-size: 14px; color: #7f8c8d;">
+                            <a href="/ticket-types" style="color: #3498db; text-decoration: none;">券種の管理（新規作成・編集・削除）</a>
+                        </div>
+                    </div>
+                    <div class="help-text">この上演回で販売する券種を選択してください</div>
+                </div>
+
+                <!-- 販売設定 -->
+                <div class="section-divider">
+                    <div class="section-title">販売設定</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="maxTicketsPerOrder">1回の注文での最大購入枚数</label>
+                        <input type="number" id="maxTicketsPerOrder" name="maxTicketsPerOrder" min="1" max="10" value="4">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="isPublic">公開設定<span class="required">*</span></label>
+                        <select id="isPublic" name="isPublic" required>
+                            <option value="true">一般公開</option>
+                            <option value="false">非公開（招待制）</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="salesNote">販売に関する注意事項</label>
+                    <textarea id="salesNote" name="salesNote" placeholder="チケット販売に関する特記事項、注意点、割引情報など"></textarea>
+                </div>
+
+                <!-- その他設定 -->
+                <div class="section-divider">
+                    <div class="section-title">その他設定</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="performanceNote">上演回備考</label>
+                    <textarea id="performanceNote" name="performanceNote" placeholder="この上演回に関する特別な情報、出演者変更、演出変更など"></textarea>
+                </div>
+
+                <div class="button-group">
+                    <a href="../dashboard.html" class="btn btn-secondary">キャンセル</a>
+                    <button type="submit" class="btn btn-primary">上演回を登録</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        // 開演時間が変更されたら終演予定時間を自動計算
+        document.getElementById('startTime').addEventListener('change', function() {
+            const startTime = this.value;
+            const eventSelect = document.getElementById('eventId');
+            
+            if (startTime && eventSelect.value) {
+                // 実際の実装では、選択された作品の上演時間を取得して計算
+                // ここではサンプルとして2時間30分後に設定
+                const start = new Date('2000-01-01 ' + startTime);
+                start.setMinutes(start.getMinutes() + 150); // 2時間30分
+                
+                const endTime = start.toTimeString().slice(0, 5);
+                document.getElementById('endTime').value = endTime;
+                
+                // 開場時間も自動設定（開演30分前）
+                const doorOpen = new Date('2000-01-01 ' + startTime);
+                doorOpen.setMinutes(doorOpen.getMinutes() - 30);
+                const doorOpenTime = doorOpen.toTimeString().slice(0, 5);
+                document.getElementById('doorOpenTime').value = doorOpenTime;
+            }
+        });
+
+        // 販売終了日時を公演開始の1時間前に自動設定
+        document.getElementById('performanceDate').addEventListener('change', updateSaleEndDate);
+        document.getElementById('startTime').addEventListener('change', updateSaleEndDate);
+
+        function updateSaleEndDate() {
+            const date = document.getElementById('performanceDate').value;
+            const time = document.getElementById('startTime').value;
+            
+            if (date && time) {
+                const performanceDateTime = new Date(date + 'T' + time);
+                performanceDateTime.setHours(performanceDateTime.getHours() - 1);
+                
+                const saleEndDateTime = performanceDateTime.toISOString().slice(0, 16);
+                document.getElementById('saleEndDate').value = saleEndDateTime;
+            }
+        }
+
+        document.getElementById('performanceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 選択された券種の確認
+            const selectedTicketTypes = document.querySelectorAll('input[name="selectedTicketTypes[]"]:checked');
+            
+            if (selectedTicketTypes.length === 0) {
+                alert('少なくとも1つの券種を選択してください。');
+                return;
+            }
+            
+            alert(`上演回が正常に登録されました。\n\n` +
+                  `選択された券種: ${selectedTicketTypes.length}種類\n\n` +
+                  `次のステップ：\n` +
+                  `1. チケット販売開始の準備\n` +
+                  `2. 宣伝・告知の開始\n` +
+                  `3. 受付スタッフへの情報共有`);
+        });
+    </script>
+</body>
+</html>

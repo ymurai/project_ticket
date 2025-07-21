@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会場管理 - チケット管理システム</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .section {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .section-content {
+            padding: 25px;
+        }
+
+        .venue-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .venue-table th,
+        .venue-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .venue-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .venue-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #229954;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-inactive {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .number-highlight {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-left: 4px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .form-row-3 {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row-3 .form-group {
+            flex: 1;
+        }
+
+        .help-text {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .form-toggle {
+            display: none;
+        }
+
+        .form-toggle.show {
+            display: block;
+        }
+
+        .edit-row {
+            background-color: #e3f2fd !important;
+        }
+
+        .usage-info {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #856404;
+        }
+
+        .address-group {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .contact-group {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .facility-group {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #bdc3c7;
+        }
+
+        @media (max-width: 768px) {
+            .form-row,
+            .form-row-3 {
+                flex-direction: column;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .venue-table {
+                font-size: 14px;
+            }
+
+            .venue-table th,
+            .venue-table td {
+                padding: 8px;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>会場管理</h1>
+            <div class="breadcrumb"><a href="../dashboard.html" style="color: #3498db; text-decoration: none;">ダッシュボード</a> > 会場管理</div>
+            <div class="header-actions">
+                <div>
+                    <span style="color: #7f8c8d; font-size: 14px;">公演会場のマスターデータの作成・編集・削除を行います</span>
+                </div>
+                <button class="btn btn-success" onclick="showAddForm()">+ 新しい会場を追加</button>
+            </div>
+        </div>
+
+        <!-- 新規作成フォーム -->
+        <div id="addForm" class="form-container form-toggle">
+            <h2 style="margin-bottom: 20px; color: #2c3e50;">新しい会場を追加</h2>
+            <form id="venueForm">
+                <!-- 基本情報 -->
+                <div class="section-subtitle">基本情報</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="venueName">会場名<span class="required">*</span></label>
+                        <input type="text" id="venueName" name="venueName" required placeholder="例：東京芸術劇場 プレイハウス">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="venueType">会場タイプ<span class="required">*</span></label>
+                        <select id="venueType" name="venueType" required>
+                            <option value="">選択してください</option>
+                            <option value="theater">劇場</option>
+                            <option value="hall">ホール</option>
+                            <option value="concert_hall">コンサートホール</option>
+                            <option value="studio">スタジオ</option>
+                            <option value="outdoor">野外ステージ</option>
+                            <option value="other">その他</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="capacity">総座席数<span class="required">*</span></label>
+                        <input type="number" id="capacity" name="capacity" min="1" required placeholder="834">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="operator">運営会社</label>
+                        <input type="text" id="operator" name="operator" placeholder="例：東京芸術劇場">
+                    </div>
+                </div>
+
+                <!-- 住所情報 -->
+                <div class="address-group">
+                    <div class="section-subtitle">住所情報</div>
+                    
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label for="postalCode">郵便番号</label>
+                            <input type="text" id="postalCode" name="postalCode" placeholder="171-0021" pattern="[0-9]{3}-[0-9]{4}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prefecture">都道府県<span class="required">*</span></label>
+                            <select id="prefecture" name="prefecture" required>
+                                <option value="">選択してください</option>
+                                <option value="tokyo">東京都</option>
+                                <option value="osaka">大阪府</option>
+                                <option value="kyoto">京都府</option>
+                                <option value="kanagawa">神奈川県</option>
+                                <option value="chiba">千葉県</option>
+                                <option value="saitama">埼玉県</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="city">市区町村<span class="required">*</span></label>
+                            <input type="text" id="city" name="city" required placeholder="豊島区">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">住所<span class="required">*</span></label>
+                        <input type="text" id="address" name="address" required placeholder="西池袋1-8-1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="building">建物名・フロア</label>
+                        <input type="text" id="building" name="building" placeholder="例：3F プレイハウス">
+                    </div>
+                </div>
+
+                <!-- 連絡先情報 -->
+                <div class="contact-group">
+                    <div class="section-subtitle">連絡先情報</div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">電話番号</label>
+                            <input type="tel" id="phone" name="phone" placeholder="03-5391-2111">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">メールアドレス</label>
+                            <input type="email" id="email" name="email" placeholder="info@example.com">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="website">公式サイト</label>
+                        <input type="url" id="website" name="website" placeholder="https://example.com">
+                    </div>
+                </div>
+
+                <!-- 施設情報 -->
+                <div class="facility-group">
+                    <div class="section-subtitle">施設・設備情報</div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nearestStation">最寄り駅</label>
+                            <input type="text" id="nearestStation" name="nearestStation" placeholder="例：JR池袋駅西口 徒歩3分">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="parkingCapacity">駐車場台数</label>
+                            <input type="number" id="parkingCapacity" name="parkingCapacity" min="0" placeholder="50">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>施設・設備</label>
+                        <div class="checkbox-grid">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="wheelchair" name="facilities[]" value="wheelchair">
+                                <label for="wheelchair">車椅子対応</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="elevator" name="facilities[]" value="elevator">
+                                <label for="elevator">エレベーター</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="hearing_loop" name="facilities[]" value="hearing_loop">
+                                <label for="hearing_loop">ヒアリングループ</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="air_conditioning" name="facilities[]" value="air_conditioning">
+                                <label for="air_conditioning">空調完備</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="wifi" name="facilities[]" value="wifi">
+                                <label for="wifi">Wi-Fi</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cafe" name="facilities[]" value="cafe">
+                                <label for="cafe">カフェ・売店</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="cloak" name="facilities[]" value="cloak">
+                                <label for="cloak">クローク</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="smoking_area" name="facilities[]" value="smoking_area">
+                                <label for="smoking_area">喫煙所</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">会場説明・備考</label>
+                    <textarea id="description" name="description" placeholder="会場の特徴、注意事項、アクセス情報など"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="isActive">状態<span class="required">*</span></label>
+                        <select id="isActive" name="isActive" required>
+                            <option value="true">有効</option>
+                            <option value="false">無効</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sortOrder">表示順序</label>
+                        <input type="number" id="sortOrder" name="sortOrder" min="1" value="1">
+                        <div class="help-text">小さい数字ほど上位に表示</div>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="hideAddForm()">キャンセル</button>
+                    <button type="submit" class="btn btn-primary">会場を追加</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 会場一覧 -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">登録済み会場一覧</h2>
+                <span style="color: #7f8c8d; font-size: 14px;">6件の会場が登録されています</span>
+            </div>
+            <div class="section-content">
+                <table class="venue-table">
+                    <thead>
+                        <tr>
+                            <th>会場名</th>
+                            <th>タイプ</th>
+                            <th>所在地</th>
+                            <th>座席数</th>
+                            <th>使用実績</th>
+                            <th>状態</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong>東京芸術劇場 プレイハウス</strong><br>
+                                <small style="color: #7f8c8d;">東京芸術劇場</small>
+                            </td>
+                            <td>劇場</td>
+                            <td>東京都豊島区西池袋</td>
+                            <td class="number-highlight">834席</td>
+                            <td class="number-highlight">15回</td>
+                            <td><span class="status-badge status-active">有効</span></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="editVenue(1)">編集</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteVenue(1)">削除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>新国立劇場 中劇場</strong><br>
+                                <small style="color: #7f8c8d;">新国立劇場</small>
+                            </td>
+                            <td>劇場</td>
+                            <td>東京都渋谷区本町</td>
+                            <td class="number-highlight">1,038席</td>
+                            <td class="number-highlight">8回</td>
+                            <td><span class="status-badge status-active">有効</span></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="editVenue(2)">編集</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteVenue(2)">削除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>シアタークリエ</strong><br>
+                                <small style="color: #7f8c8d;">東宝</small>
+                            </td>
+                            <td>劇場</td>
+                            <td>東京都中央区銀座</td>
+                            <td class="number-highlight">588席</td>
+                            <td class="number-highlight">12回</td>
+                            <td><span class="status-badge status-active">有効</span></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="editVenue(3)">編集</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteVenue(3)">削除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>青山劇場</strong><br>
+                                <small style="color: #7f8c8d;">こどもの城</small>
+                            </td>
+                            <td>劇場</td>
+                            <td>東京都渋谷区神宮前</td>
+                            <td class="number-highlight">1,200席</td>
+                            <td class="number-highlight">5回</td>
+                            <td><span class="status-badge status-active">有効</span></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="editVenue(4)">編集</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteVenue(4)">削除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>サントリーホール 大ホール</strong><br>
+                                <small style="color: #7f8c8d;">サントリーホール</small>
+                            </td>
+                            <td>コンサートホール</td>
+                            <td>東京都港区赤坂</td>
+                            <td class="number-highlight">2,006席</td>
+                            <td class="number-highlight">3回</td>
+                            <td><span class="status-badge status-active">有効</span></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="editVenue(5)">編集</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteVenue(5)">削除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>渋谷スタジオ</strong><br>
+                                <small style="color: #7f8c8d;">閉館予定</small>
+                            </td>
+                            <td>スタジオ</td>
+                            <td>東京都渋谷区道玄坂</td>
+                            <td class="number-highlight">150席</td>
+                            <td class="number-highlight">0回</td>
+                            <td><span class="status-badge status-inactive">無効</span></td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="editVenue(6)">編集</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteVenue(6)">削除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 編集フォーム -->
+        <div id="editForm" class="form-container form-toggle">
+            <h2 style="margin-bottom: 20px; color: #2c3e50;">会場を編集</h2>
+            <form id="venueEditForm">
+                <input type="hidden" id="editId" name="editId">
+                
+                <!-- 基本情報 -->
+                <div class="section-subtitle">基本情報</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editVenueName">会場名<span class="required">*</span></label>
+                        <input type="text" id="editVenueName" name="editVenueName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editVenueType">会場タイプ<span class="required">*</span></label>
+                        <select id="editVenueType" name="editVenueType" required>
+                            <option value="">選択してください</option>
+                            <option value="theater">劇場</option>
+                            <option value="hall">ホール</option>
+                            <option value="concert_hall">コンサートホール</option>
+                            <option value="studio">スタジオ</option>
+                            <option value="outdoor">野外ステージ</option>
+                            <option value="other">その他</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editCapacity">総座席数<span class="required">*</span></label>
+                        <input type="number" id="editCapacity" name="editCapacity" min="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editOperator">運営会社</label>
+                        <input type="text" id="editOperator" name="editOperator">
+                    </div>
+                </div>
+
+                <!-- 住所情報 -->
+                <div class="address-group">
+                    <div class="section-subtitle">住所情報</div>
+                    
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label for="editPostalCode">郵便番号</label>
+                            <input type="text" id="editPostalCode" name="editPostalCode" pattern="[0-9]{3}-[0-9]{4}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editPrefecture">都道府県<span class="required">*</span></label>
+                            <select id="editPrefecture" name="editPrefecture" required>
+                                <option value="">選択してください</option>
+                                <option value="tokyo">東京都</option>
+                                <option value="osaka">大阪府</option>
+                                <option value="kyoto">京都府</option>
+                                <option value="kanagawa">神奈川県</option>
+                                <option value="chiba">千葉県</option>
+                                <option value="saitama">埼玉県</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editCity">市区町村<span class="required">*</span></label>
+                            <input type="text" id="editCity" name="editCity" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editAddress">住所<span class="required">*</span></label>
+                        <input type="text" id="editAddress" name="editAddress" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editBuilding">建物名・フロア</label>
+                        <input type="text" id="editBuilding" name="editBuilding">
+                    </div>
+                </div>
+
+                <!-- 連絡先情報 -->
+                <div class="contact-group">
+                    <div class="section-subtitle">連絡先情報</div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editPhone">電話番号</label>
+                            <input type="tel" id="editPhone" name="editPhone">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editEmail">メールアドレス</label>
+                            <input type="email" id="editEmail" name="editEmail">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editWebsite">公式サイト</label>
+                        <input type="url" id="editWebsite" name="editWebsite">
+                    </div>
+                </div>
+
+                <!-- 施設情報 -->
+                <div class="facility-group">
+                    <div class="section-subtitle">施設・設備情報</div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="editNearestStation">最寄り駅</label>
+                            <input type="text" id="editNearestStation" name="editNearestStation">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="editParkingCapacity">駐車場台数</label>
+                            <input type="number" id="editParkingCapacity" name="editParkingCapacity" min="0">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>施設・設備</label>
+                        <div class="checkbox-grid">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="editWheelchair" name="editFacilities[]" value="wheelchair">
+                                <label for="editWheelchair">車椅子対応</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="editElevator" name="editFacilities[]" value="elevator">
+                                <label for="editElevator">エレベーター</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="editHearingLoop" name="editFacilities[]" value="hearing_loop">
+                                <label for="editHearingLoop">ヒアリングループ</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="editAirConditioning" name="editFacilities[]" value="air_conditioning">
+                                <label for="editAirConditioning">空調完備</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="editWifi" name="editFacilities[]" value="wifi">
+                                <label for="editWifi">Wi-Fi</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="editCafe" name="editFacilities[]" value="cafe">
+                                <label for="editCafe">カフェ・売店</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="editCloak" name="editFacilities[]" value="cloak">
+                                <label for="editCloak">クローク</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="editSmokingArea" name="editFacilities[]" value="smoking_area">
+                                <label for="editSmokingArea">喫煙所</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editDescription">会場説明・備考</label>
+                    <textarea id="editDescription" name="editDescription"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editIsActive">状態<span class="required">*</span></label>
+                        <select id="editIsActive" name="editIsActive" required>
+                            <option value="true">有効</option>
+                            <option value="false">無効</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editSortOrder">表示順序</label>
+                        <input type="number" id="editSortOrder" name="editSortOrder" min="1">
+                        <div class="help-text">小さい数字ほど上位に表示</div>
+                    </div>
+                </div>
+
+                <!-- 使用状況表示 -->
+                <div id="usageInfo" class="usage-info" style="display: none;">
+                    <strong>使用状況:</strong> この会場は現在 <span id="usageCount">0</span> 回の公演で使用されています。
+                    座席数変更は新規作成の公演のみに適用されます。
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="hideEditForm()">キャンセル</button>
+                    <button type="submit" class="btn btn-primary">変更を保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // サンプルデータ
+        const venues = [
+            { 
+                id: 1, 
+                name: '東京芸術劇場 プレイハウス', 
+                type: 'theater', 
+                capacity: 834, 
+                operator: '東京芸術劇場',
+                prefecture: 'tokyo',
+                city: '豊島区',
+                address: '西池袋1-8-1',
+                usageCount: 15, 
+                isActive: true, 
+                sortOrder: 1,
+                facilities: ['wheelchair', 'elevator', 'air_conditioning', 'wifi', 'cafe', 'cloak']
+            },
+            { 
+                id: 2, 
+                name: '新国立劇場 中劇場', 
+                type: 'theater', 
+                capacity: 1038, 
+                operator: '新国立劇場',
+                prefecture: 'tokyo',
+                city: '渋谷区',
+                address: '本町1-1-1',
+                usageCount: 8, 
+                isActive: true, 
+                sortOrder: 2,
+                facilities: ['wheelchair', 'elevator', 'hearing_loop', 'air_conditioning', 'wifi', 'cafe']
+            },
+            { 
+                id: 3, 
+                name: 'シアタークリエ', 
+                type: 'theater', 
+                capacity: 588, 
+                operator: '東宝',
+                prefecture: 'tokyo',
+                city: '中央区',
+                address: '銀座6-18-2',
+                usageCount: 12, 
+                isActive: true, 
+                sortOrder: 3,
+                facilities: ['elevator', 'air_conditioning', 'cloak']
+            },
+            { 
+                id: 4, 
+                name: '青山劇場', 
+                type: 'theater', 
+                capacity: 1200, 
+                operator: 'こどもの城',
+                prefecture: 'tokyo',
+                city: '渋谷区',
+                address: '神宮前5-53-1',
+                usageCount: 5, 
+                isActive: true, 
+                sortOrder: 4,
+                facilities: ['wheelchair', 'elevator', 'air_conditioning', 'cafe']
+            },
+            { 
+                id: 5, 
+                name: 'サントリーホール 大ホール', 
+                type: 'concert_hall', 
+                capacity: 2006, 
+                operator: 'サントリーホール',
+                prefecture: 'tokyo',
+                city: '港区',
+                address: '赤坂1-13-1',
+                usageCount: 3, 
+                isActive: true, 
+                sortOrder: 5,
+                facilities: ['wheelchair', 'elevator', 'hearing_loop', 'air_conditioning', 'wifi', 'cafe', 'cloak']
+            },
+            { 
+                id: 6, 
+                name: '渋谷スタジオ', 
+                type: 'studio', 
+                capacity: 150, 
+                operator: '閉館予定',
+                prefecture: 'tokyo',
+                city: '渋谷区',
+                address: '道玄坂2-10-7',
+                usageCount: 0, 
+                isActive: false, 
+                sortOrder: 6,
+                facilities: ['air_conditioning']
+            }
+        ];
+
+        function showAddForm() {
+            document.getElementById('addForm').classList.add('show');
+            document.getElementById('venueName').focus();
+        }
+
+        function hideAddForm() {
+            document.getElementById('addForm').classList.remove('show');
+            document.getElementById('venueForm').reset();
+        }
+
+        function showEditForm() {
+            document.getElementById('editForm').classList.add('show');
+            document.getElementById('editVenueName').focus();
+        }
+
+        function hideEditForm() {
+            document.getElementById('editForm').classList.remove('show');
+            document.getElementById('venueEditForm').reset();
+            document.getElementById('usageInfo').style.display = 'none';
+            
+            // 編集中の行のハイライトを解除
+            const editRows = document.querySelectorAll('.edit-row');
+            editRows.forEach(row => row.classList.remove('edit-row'));
+        }
+
+        function editVenue(id) {
+            const venue = venues.find(v => v.id === id);
+            if (!venue) return;
+
+            // 編集中の行をハイライト
+            const editRows = document.querySelectorAll('.edit-row');
+            editRows.forEach(row => row.classList.remove('edit-row'));
+            
+            const row = event.target.closest('tr');
+            row.classList.add('edit-row');
+
+            // フォームに値を設定
+            document.getElementById('editId').value = venue.id;
+            document.getElementById('editVenueName').value = venue.name;
+            document.getElementById('editVenueType').value = venue.type;
+            document.getElementById('editCapacity').value = venue.capacity;
+            document.getElementById('editOperator').value = venue.operator || '';
+            document.getElementById('editPrefecture').value = venue.prefecture;
+            document.getElementById('editCity').value = venue.city;
+            document.getElementById('editAddress').value = venue.address;
+            document.getElementById('editIsActive').value = venue.isActive.toString();
+            document.getElementById('editSortOrder').value = venue.sortOrder;
+
+            // 設備のチェックボックスをリセットしてから設定
+            const facilityCheckboxes = document.querySelectorAll('input[name="editFacilities[]"]');
+            facilityCheckboxes.forEach(cb => cb.checked = false);
+            
+            if (venue.facilities) {
+                venue.facilities.forEach(facility => {
+                    const checkbox = document.querySelector(`input[name="editFacilities[]"][value="${facility}"]`);
+                    if (checkbox) checkbox.checked = true;
+                });
+            }
+
+            // 使用状況を表示
+            if (venue.usageCount > 0) {
+                document.getElementById('usageCount').textContent = venue.usageCount;
+                document.getElementById('usageInfo').style.display = 'block';
+            } else {
+                document.getElementById('usageInfo').style.display = 'none';
+            }
+
+            showEditForm();
+        }
+
+        function deleteVenue(id) {
+            const venue = venues.find(v => v.id === id);
+            if (!venue) return;
+
+            if (venue.usageCount > 0) {
+                alert(`この会場「${venue.name}」は現在 ${venue.usageCount} 回の公演で使用されているため削除できません。\n\n削除するには、まず使用している公演から会場を変更してください。`);
+                return;
+            }
+
+            if (confirm(`会場「${venue.name}」を削除してもよろしいですか？\n\n注意: この操作は取り消せません。`)) {
+                alert(`会場「${venue.name}」が削除されました。`);
+                // 実際の実装では、ここでサーバーに削除リクエストを送信し、画面を更新
+            }
+        }
+
+        // 新規作成フォームの送信
+        document.getElementById('venueForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            
+            // 設備情報の収集
+            const facilities = Array.from(document.querySelectorAll('input[name="facilities[]"]:checked'))
+                .map(cb => cb.value);
+            
+            alert(`新しい会場「${data.venueName}」が作成されました。\n\n設定内容:\n• タイプ: ${data.venueType}\n• 座席数: ${data.capacity}席\n• 所在地: ${data.prefecture} ${data.city}\n• 設備: ${facilities.length}件`);
+            
+            hideAddForm();
+            // 実際の実装では、ここでサーバーに送信し、一覧を更新
+        });
+
+        // 編集フォームの送信
+        document.getElementById('venueEditForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            
+            // 設備情報の収集
+            const facilities = Array.from(document.querySelectorAll('input[name="editFacilities[]"]:checked'))
+                .map(cb => cb.value);
+            
+            alert(`会場「${data.editVenueName}」の変更が保存されました。\n\n更新内容:\n• タイプ: ${data.editVenueType}\n• 座席数: ${data.editCapacity}席\n• 状態: ${data.editIsActive === 'true' ? '有効' : '無効'}\n• 設備: ${facilities.length}件`);
+            
+            hideEditForm();
+            // 実際の実装では、ここでサーバーに送信し、一覧を更新
+        });
+
+        // ESCキーでフォームを閉じる
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (document.getElementById('addForm').classList.contains('show')) {
+                    hideAddForm();
+                } else if (document.getElementById('editForm').classList.contains('show')) {
+                    hideEditForm();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

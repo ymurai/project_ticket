@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ダッシュボード - チケット管理システム</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .welcome-message {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .welcome-message h2 {
+            margin-bottom: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background-color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #7f8c8d;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .stat-change {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+
+        .stat-change.positive {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .stat-change.negative {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .section {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .section-content {
+            padding: 25px;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .action-card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.2s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .action-card:hover {
+            transform: translateY(-2px);
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .action-icon {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+
+        .action-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .action-description {
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+
+        .event-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .event-table th,
+        .event-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .event-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .event-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 3px;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #229954;
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-upcoming {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-ended {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .currency {
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .number-highlight {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .progress-bar {
+            background-color: #e9ecef;
+            border-radius: 10px;
+            height: 15px;
+            margin: 5px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #28a745;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .recent-activity {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2px;
+        }
+
+        .activity-time {
+            font-size: 12px;
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .quick-actions {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .event-table {
+                font-size: 14px;
+            }
+
+            .event-table th,
+            .event-table td {
+                padding: 8px;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <h1>ダッシュボード</h1>
+            <div class="breadcrumb">ホーム > ダッシュボード</div>
+        </div>
+
+        <!-- ウェルカムメッセージ -->
+        <div class="welcome-message">
+            <h2>おかえりなさい、田中さん</h2>
+            <p>今日の売上状況と最新の活動をチェックしましょう</p>
+        </div>
+
+        <!-- 統計カード -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">15</div>
+                <div class="stat-label">総作品数</div>
+                <div class="stat-change positive">+2 今月</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">42</div>
+                <div class="stat-label">上演回数</div>
+                <div class="stat-change positive">+8 今月</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">¥2,450,000</div>
+                <div class="stat-label">今月の売上</div>
+                <div class="stat-change positive">+12.5%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">1,247</div>
+                <div class="stat-label">販売チケット数</div>
+                <div class="stat-change positive">+156 今週</div>
+            </div>
+        </div>
+
+        <!-- クイックアクション -->
+        <div class="quick-actions">
+            <a href="event/new.html" class="action-card">
+                <div class="action-icon">🎭</div>
+                <div class="action-title">新しい作品を登録</div>
+                <div class="action-description">新規作品の基本情報を登録</div>
+            </a>
+            <a href="performance/new.html" class="action-card">
+                <div class="action-icon">📅</div>
+                <div class="action-title">上演回を追加</div>
+                <div class="action-description">既存作品の上演回を設定</div>
+            </a>
+            <a href="venue/index.html" class="action-card">
+                <div class="action-icon">🏛️</div>
+                <div class="action-title">会場を管理</div>
+                <div class="action-description">会場マスターの登録・編集</div>
+            </a>
+            <a href="ticket-type/index.html" class="action-card">
+                <div class="action-icon">🎫</div>
+                <div class="action-title">券種を設定</div>
+                <div class="action-description">作品の券種・価格設定</div>
+            </a>
+        </div>
+
+        <!-- 作品リスト -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">作品一覧</h2>
+                <a href="event/new.html" class="btn btn-success">+ 新しい作品を登録</a>
+            </div>
+            <div class="section-content">
+                <table class="event-table">
+                    <thead>
+                        <tr>
+                            <th>作品名</th>
+                            <th>ジャンル</th>
+                            <th>上演回数</th>
+                            <th>販売状況</th>
+                            <th>売上</th>
+                            <th>状態</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong>ハムレット</strong><br>
+                                <small style="color: #7f8c8d;">シェイクスピア劇団</small>
+                            </td>
+                            <td>演劇</td>
+                            <td class="number-highlight">5回</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 68%;">68%</div>
+                                </div>
+                                <small>2,834/4,170席</small>
+                            </td>
+                            <td class="currency">¥18,450,000</td>
+                            <td><span class="status-badge status-active">販売中</span></td>
+                            <td>
+                                <a href="event/edit.html" class="btn btn-primary btn-sm">編集</a>
+                                <a href="performance/new.html" class="btn btn-secondary btn-sm">上演回追加</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>ライオンキング</strong><br>
+                                <small style="color: #7f8c8d;">劇団四季</small>
+                            </td>
+                            <td>ミュージカル</td>
+                            <td class="number-highlight">12回</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 85%;">85%</div>
+                                </div>
+                                <small>8,500/10,000席</small>
+                            </td>
+                            <td class="currency">¥85,600,000</td>
+                            <td><span class="status-badge status-active">販売中</span></td>
+                            <td>
+                                <a href="event/edit.html" class="btn btn-primary btn-sm">編集</a>
+                                <a href="performance/new.html" class="btn btn-secondary btn-sm">上演回追加</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>オペラ座の怪人</strong><br>
+                                <small style="color: #7f8c8d;">東宝</small>
+                            </td>
+                            <td>ミュージカル</td>
+                            <td class="number-highlight">8回</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 92%;">92%</div>
+                                </div>
+                                <small>7,360/8,000席</small>
+                            </td>
+                            <td class="currency">¥58,880,000</td>
+                            <td><span class="status-badge status-active">販売中</span></td>
+                            <td>
+                                <a href="event/edit.html" class="btn btn-primary btn-sm">編集</a>
+                                <a href="performance/new.html" class="btn btn-secondary btn-sm">上演回追加</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>夏の夜の夢</strong><br>
+                                <small style="color: #7f8c8d;">新劇座</small>
+                            </td>
+                            <td>演劇</td>
+                            <td class="number-highlight">3回</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 45%;">45%</div>
+                                </div>
+                                <small>540/1,200席</small>
+                            </td>
+                            <td class="currency">¥2,430,000</td>
+                            <td><span class="status-badge status-upcoming">準備中</span></td>
+                            <td>
+                                <a href="event/edit.html" class="btn btn-primary btn-sm">編集</a>
+                                <a href="performance/new.html" class="btn btn-secondary btn-sm">上演回追加</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>ロミオとジュリエット</strong><br>
+                                <small style="color: #7f8c8d;">バレエ団</small>
+                            </td>
+                            <td>ダンス</td>
+                            <td class="number-highlight">6回</td>
+                            <td>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 100%;">完売</div>
+                                </div>
+                                <small>4,800/4,800席</small>
+                            </td>
+                            <td class="currency">¥36,000,000</td>
+                            <td><span class="status-badge status-ended">終了</span></td>
+                            <td>
+                                <a href="performance/detail.html" class="btn btn-primary btn-sm">詳細</a>
+                                <a href="#" class="btn btn-secondary btn-sm">レポート</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+            <!-- 今後の上演予定 -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">今後の上演予定</h2>
+                    <a href="performance/new.html" class="btn btn-success btn-sm">+ 上演回追加</a>
+                </div>
+                <div class="section-content">
+                    <table class="event-table">
+                        <thead>
+                            <tr>
+                                <th>作品名</th>
+                                <th>日時</th>
+                                <th>会場</th>
+                                <th>販売率</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>ハムレット</strong></td>
+                                <td>7/25 19:00</td>
+                                <td>東京芸術劇場</td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 68%;">68%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="performance/detail.html" class="btn btn-primary btn-sm">詳細</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>ライオンキング</strong></td>
+                                <td>7/26 14:00</td>
+                                <td>新国立劇場</td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 85%;">85%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="performance/detail.html" class="btn btn-primary btn-sm">詳細</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>ハムレット</strong></td>
+                                <td>7/27 19:00</td>
+                                <td>東京芸術劇場</td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 72%;">72%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="performance/detail.html" class="btn btn-primary btn-sm">詳細</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>オペラ座の怪人</strong></td>
+                                <td>7/28 18:30</td>
+                                <td>シアタークリエ</td>
+                                <td>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 92%;">92%</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="performance/detail.html" class="btn btn-primary btn-sm">詳細</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 最近の活動 -->
+            <div class="section">
+                <div class="section-header">
+                    <h2 class="section-title">最近の活動</h2>
+                </div>
+                <div class="section-content">
+                    <div class="recent-activity">
+                        <div class="activity-item">
+                            <div class="activity-icon">🎫</div>
+                            <div class="activity-content">
+                                <div class="activity-title">チケット売上</div>
+                                <div class="activity-time">ハムレット S席×2枚 - 5分前</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">📝</div>
+                            <div class="activity-content">
+                                <div class="activity-title">上演回追加</div>
+                                <div class="activity-time">オペラ座の怪人 8/15公演 - 1時間前</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">🎭</div>
+                            <div class="activity-content">
+                                <div class="activity-title">新作品登録</div>
+                                <div class="activity-time">夏の夜の夢を登録 - 3時間前</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">🏛️</div>
+                            <div class="activity-content">
+                                <div class="activity-title">会場情報更新</div>
+                                <div class="activity-time">新国立劇場の設備情報を更新 - 6時間前</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">💰</div>
+                            <div class="activity-content">
+                                <div class="activity-title">売上目標達成</div>
+                                <div class="activity-time">ライオンキング 7/20公演が完売 - 1日前</div>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">⚙️</div>
+                            <div class="activity-content">
+                                <div class="activity-title">券種設定変更</div>
+                                <div class="activity-time">ハムレットの学生席価格を変更 - 2日前</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 簡単な統計データの更新シミュレーション
+        function updateStats() {
+            console.log('統計データを更新中...');
+            // 実際の実装では、リアルタイムでデータを取得
+        }
+
+        // 30秒ごとにデータ更新
+        setInterval(updateStats, 30000);
+
+        // 初期表示時にデータ読み込み
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('ダッシュボードが読み込まれました');
+        });
+    </script>
+</body>
+</html>

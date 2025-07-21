@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>上演回編集フォーム - チケット管理システム</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-left: 4px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-group textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .form-row-3 {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row-3 .form-group {
+            flex: 1;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .help-text {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .section-divider {
+            border-top: 2px solid #eee;
+            margin: 40px 0 30px 0;
+            padding-top: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #bdc3c7;
+        }
+
+
+        .disabled-input {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            cursor: not-allowed;
+        }
+
+        .warning-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        .warning-title {
+            font-weight: 600;
+            color: #856404;
+            margin-bottom: 8px;
+        }
+
+        .warning-text {
+            color: #856404;
+            font-size: 14px;
+        }
+
+        .sales-info {
+            background-color: #e3f2fd;
+            border: 1px solid #bbdefb;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .sales-info-title {
+            font-weight: 600;
+            color: #1565c0;
+            margin-bottom: 8px;
+        }
+
+        .sales-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #1976d2;
+        }
+
+        .sales-stat {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sales-stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .sales-stat-value {
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .form-row,
+            .form-row-3 {
+                flex-direction: column;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+
+            .sales-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>上演回編集フォーム</h1>
+            <div class="breadcrumb"><a href="../dashboard.html" style="color: #3498db; text-decoration: none;">ダッシュボード</a> > 上演回管理 > <a href="detail.html" style="color: #3498db; text-decoration: none;">ハムレット 2024年7月25日 19:00</a> > 編集</div>
+        </div>
+
+        <div class="form-container">
+            <!-- 現在の販売状況 -->
+            <div class="sales-info">
+                <div class="sales-info-title">現在の販売状況</div>
+                <div class="sales-stats">
+                    <div class="sales-stat">
+                        <span class="sales-stat-label">販売済み</span>
+                        <span class="sales-stat-value">567席</span>
+                    </div>
+                    <div class="sales-stat">
+                        <span class="sales-stat-label">売上金額</span>
+                        <span class="sales-stat-value">¥3,582,500</span>
+                    </div>
+                    <div class="sales-stat">
+                        <span class="sales-stat-label">販売率</span>
+                        <span class="sales-stat-value">68.0%</span>
+                    </div>
+                    <div class="sales-stat">
+                        <span class="sales-stat-label">最終注文</span>
+                        <span class="sales-stat-value">2024/7/21 14:25</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 注意事項 -->
+            <div class="warning-box">
+                <div class="warning-title">編集時の注意事項</div>
+                <div class="warning-text">
+                    • 既に販売済みのチケットがある場合、一部の項目は変更できません<br>
+                    • 券種の削除は、該当券種で販売済みチケットがない場合のみ可能です<br>
+                    • 価格変更は既存注文には影響しません（新規注文のみ適用）
+                </div>
+            </div>
+
+            <form id="performanceEditForm">
+                <!-- 基本情報 -->
+                <div class="section-title">基本情報</div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="eventId">作品<span class="required">*</span></label>
+                        <select id="eventId" name="eventId" required class="disabled-input" disabled>
+                            <option value="1" selected>ハムレット（シェイクスピア劇団）</option>
+                        </select>
+                        <div class="help-text">作品は変更できません</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="venueId">会場<span class="required">*</span></label>
+                        <select id="venueId" name="venueId" required>
+                            <option value="1" selected>東京芸術劇場 プレイハウス（834席）</option>
+                            <option value="2">新国立劇場 中劇場（1,038席）</option>
+                            <option value="3">シアタークリエ（588席）</option>
+                            <option value="4">青山劇場（1,200席）</option>
+                        </select>
+                        <div class="help-text">会場変更は総席数に影響する可能性があります</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="performanceTitle">上演回タイトル</label>
+                    <input type="text" id="performanceTitle" name="performanceTitle" value="" placeholder="例：開幕記念公演、千秋楽など（省略可）">
+                </div>
+
+                <!-- 日時設定 -->
+                <div class="section-divider">
+                    <div class="section-title">日時設定</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="performanceDate">公演日<span class="required">*</span></label>
+                        <input type="date" id="performanceDate" name="performanceDate" value="2024-07-25" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="startTime">開演時間<span class="required">*</span></label>
+                        <input type="time" id="startTime" name="startTime" value="19:00" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="endTime">終演予定時間</label>
+                        <input type="time" id="endTime" name="endTime" value="21:30">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="doorOpenTime">開場時間</label>
+                        <input type="time" id="doorOpenTime" name="doorOpenTime" value="18:30">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="saleStartDate">販売開始日時<span class="required">*</span></label>
+                        <input type="datetime-local" id="saleStartDate" name="saleStartDate" value="2024-06-01T10:00" required>
+                        <div class="help-text">既に販売中のため、過去日時への変更はできません</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="saleEndDate">販売終了日時<span class="required">*</span></label>
+                        <input type="datetime-local" id="saleEndDate" name="saleEndDate" value="2024-07-25T18:00" required>
+                    </div>
+                </div>
+
+                <!-- 券種設定 -->
+                <div class="section-divider">
+                    <div class="section-title">券種設定</div>
+                </div>
+
+                <div class="form-group">
+                    <label>現在利用中の券種</label>
+                    <div style="border: 2px solid #ddd; border-radius: 4px; padding: 15px; background-color: #f8f9fa;">
+                        <div style="margin-bottom: 15px;">
+                            <div style="display: flex; align-items: center; margin-bottom: 8px; padding: 8px; background-color: white; border-radius: 4px;">
+                                <span style="flex: 1;">S席 - ¥8,000（200席）</span>
+                                <span style="font-size: 14px; color: #7f8c8d;">販売済み: 178席</span>
+                            </div>
+                            <div style="display: flex; align-items: center; margin-bottom: 8px; padding: 8px; background-color: white; border-radius: 4px;">
+                                <span style="flex: 1;">A席 - ¥6,500（300席）</span>
+                                <span style="font-size: 14px; color: #7f8c8d;">販売済み: 234席</span>
+                            </div>
+                            <div style="display: flex; align-items: center; margin-bottom: 8px; padding: 8px; background-color: white; border-radius: 4px;">
+                                <span style="flex: 1;">B席 - ¥4,500（250席）</span>
+                                <span style="font-size: 14px; color: #7f8c8d;">販売済み: 125席</span>
+                            </div>
+                            <div style="display: flex; align-items: center; padding: 8px; background-color: white; border-radius: 4px;">
+                                <span style="flex: 1;">学生席 - ¥2,500（84席）</span>
+                                <span style="font-size: 14px; color: #7f8c8d;">販売済み: 30席</span>
+                            </div>
+                        </div>
+                        <div style="font-size: 14px; color: #7f8c8d;">
+                            <a href="/ticket-types" style="color: #3498db; text-decoration: none;">券種の管理（新規作成・編集・削除）</a>
+                        </div>
+                    </div>
+                    <div class="help-text">券種の変更は別画面で行ってください（販売済みチケットがある券種は削除できません）</div>
+                </div>
+
+                <!-- 販売設定 -->
+                <div class="section-divider">
+                    <div class="section-title">販売設定</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="maxTicketsPerOrder">1回の注文での最大購入枚数</label>
+                        <input type="number" id="maxTicketsPerOrder" name="maxTicketsPerOrder" min="1" max="10" value="4">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="isPublic">公開設定<span class="required">*</span></label>
+                        <select id="isPublic" name="isPublic" required>
+                            <option value="true" selected>一般公開</option>
+                            <option value="false">非公開（招待制）</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="salesNote">販売に関する注意事項</label>
+                    <textarea id="salesNote" name="salesNote" placeholder="チケット販売に関する特記事項、注意点、割引情報など"></textarea>
+                </div>
+
+                <!-- その他設定 -->
+                <div class="section-divider">
+                    <div class="section-title">その他設定</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="performanceNote">上演回備考</label>
+                    <textarea id="performanceNote" name="performanceNote" placeholder="この上演回に関する特別な情報、出演者変更、演出変更など"></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn btn-danger" onclick="confirmDelete()">上演回を削除</button>
+                    <a href="detail.html" class="btn btn-secondary">キャンセル</a>
+                    <button type="submit" class="btn btn-primary">変更を保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        function confirmDelete() {
+            if (confirm('この上演回を完全に削除してもよろしいですか？\n\n警告:\n• 販売済みチケットも含めて全てのデータが削除されます\n• この操作は取り消せません\n• 顧客への返金処理は別途必要です')) {
+                if (confirm('本当に削除しますか？\n\n最終確認です。「OK」をクリックすると削除が実行されます。')) {
+                    alert('上演回削除機能は実装中です。\n\n実際の削除処理では:\n1. 顧客への通知メール送信\n2. 返金処理の実行\n3. データベースからの削除\nが順次実行されます。');
+                }
+            }
+        }
+
+        // 開演時間が変更されたら終演予定時間を自動計算
+        document.getElementById('startTime').addEventListener('change', function() {
+            const startTime = this.value;
+            
+            if (startTime) {
+                const start = new Date('2000-01-01 ' + startTime);
+                start.setMinutes(start.getMinutes() + 150); // 2時間30分
+                
+                const endTime = start.toTimeString().slice(0, 5);
+                document.getElementById('endTime').value = endTime;
+                
+                // 開場時間も自動設定（開演30分前）
+                const doorOpen = new Date('2000-01-01 ' + startTime);
+                doorOpen.setMinutes(doorOpen.getMinutes() - 30);
+                const doorOpenTime = doorOpen.toTimeString().slice(0, 5);
+                document.getElementById('doorOpenTime').value = doorOpenTime;
+            }
+        });
+
+        // 販売終了日時を公演開始の1時間前に自動設定
+        document.getElementById('performanceDate').addEventListener('change', updateSaleEndDate);
+        document.getElementById('startTime').addEventListener('change', updateSaleEndDate);
+
+        function updateSaleEndDate() {
+            const date = document.getElementById('performanceDate').value;
+            const time = document.getElementById('startTime').value;
+            
+            if (date && time) {
+                const performanceDateTime = new Date(date + 'T' + time);
+                performanceDateTime.setHours(performanceDateTime.getHours() - 1);
+                
+                const saleEndDateTime = performanceDateTime.toISOString().slice(0, 16);
+                document.getElementById('saleEndDate').value = saleEndDateTime;
+            }
+        }
+
+        document.getElementById('performanceEditForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (confirm('上演回の変更を保存しますか？\n\n注意:\n• 変更内容は新規注文から適用されます\n• 既存の注文には影響しません')) {
+                alert('上演回が正常に更新されました。\n\n変更内容:\n• 基本情報の更新\n• 日時・販売設定の更新\n\n既存の注文には影響ありません。');
+            }
+        });
+    </script>
+</body>
+</html>

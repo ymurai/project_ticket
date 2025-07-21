@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>券種管理 - チケット管理システム</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .section {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .section-header {
+            padding: 20px 25px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .section-content {
+            padding: 25px;
+        }
+
+        .ticket-type-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .ticket-type-table th,
+        .ticket-type-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .ticket-type-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .ticket-type-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #229954;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-inactive {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .currency {
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .number-highlight {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-left: 4px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .help-text {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .form-toggle {
+            display: none;
+        }
+
+        .form-toggle.show {
+            display: block;
+        }
+
+        .edit-row {
+            background-color: #e3f2fd !important;
+        }
+
+        .usage-info {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 5px;
+            font-size: 12px;
+            color: #856404;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+
+            .header-actions {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .ticket-type-table {
+                font-size: 14px;
+            }
+
+            .ticket-type-table th,
+            .ticket-type-table td {
+                padding: 8px;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>券種管理</h1>
+            <div class="breadcrumb"><a href="../dashboard.html" style="color: #3498db; text-decoration: none;">ダッシュボード</a> > 作品管理 > ハムレット > 券種管理</div>
+            
+            <!-- 公演情報 -->
+            <div style="background-color: #e3f2fd; border: 1px solid #bbdefb; border-radius: 6px; padding: 15px; margin: 15px 0;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <h3 style="color: #1565c0; margin: 0;">設定対象公演</h3>
+                    <a href="/events/1" style="color: #3498db; text-decoration: none; font-size: 14px;">作品詳細を見る</a>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; font-size: 14px;">
+                    <div>
+                        <span style="color: #666; font-weight: 600;">作品名:</span>
+                        <span style="color: #1976d2; font-weight: 600;">ハムレット</span>
+                    </div>
+                    <div>
+                        <span style="color: #666; font-weight: 600;">劇団:</span>
+                        <span>シェイクスピア劇団</span>
+                    </div>
+                    <div>
+                        <span style="color: #666; font-weight: 600;">会場:</span>
+                        <span>東京芸術劇場 プレイハウス</span>
+                    </div>
+                    <div>
+                        <span style="color: #666; font-weight: 600;">総席数:</span>
+                        <span>834席</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div>
+                    <span style="color: #7f8c8d; font-size: 14px;">この作品で使用する券種の設定を行います</span>
+                </div>
+                <button class="btn btn-success" onclick="showAddForm()">+ 新しい券種を追加</button>
+            </div>
+        </div>
+
+        <!-- 新規作成フォーム -->
+        <div id="addForm" class="form-container form-toggle">
+            <h2 style="margin-bottom: 20px; color: #2c3e50;">新しい券種を追加</h2>
+            <form id="ticketTypeForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="typeName">券種名<span class="required">*</span></label>
+                        <input type="text" id="typeName" name="typeName" required placeholder="例：S席、A席、学生席">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">価格（円）<span class="required">*</span></label>
+                        <input type="number" id="price" name="price" min="0" required placeholder="8000">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="defaultSeats">デフォルト席数</label>
+                        <input type="number" id="defaultSeats" name="defaultSeats" min="1" placeholder="200">
+                        <div class="help-text">上演回作成時のデフォルト値（後で変更可能）</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">カテゴリ</label>
+                        <select id="category" name="category">
+                            <option value="">選択してください</option>
+                            <option value="premium">プレミアム席</option>
+                            <option value="standard">一般席</option>
+                            <option value="discount">割引席</option>
+                            <option value="special">特別席</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">説明・備考</label>
+                    <textarea id="description" name="description" rows="3" placeholder="席種の説明、特典、注意事項など"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="sortOrder">表示順序</label>
+                        <input type="number" id="sortOrder" name="sortOrder" min="1" value="1">
+                        <div class="help-text">小さい数字ほど上位に表示</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="isActive">状態<span class="required">*</span></label>
+                        <select id="isActive" name="isActive" required>
+                            <option value="true">有効</option>
+                            <option value="false">無効</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="hideAddForm()">キャンセル</button>
+                    <button type="submit" class="btn btn-primary">券種を追加</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 券種一覧 -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">この作品の券種一覧</h2>
+                <span style="color: #7f8c8d; font-size: 14px;">5件の券種が設定されています</span>
+            </div>
+            <div class="section-content">
+                <table class="ticket-type-table">
+                    <thead>
+                        <tr>
+                            <th>券種名</th>
+                            <th>価格</th>
+                            <th>カテゴリ</th>
+                            <th>デフォルト席数</th>
+                            <th>上演回での使用</th>
+                            <th>状態</th>
+                            <th>表示順</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>S席</strong></td>
+                            <td class="currency">¥8,000</td>
+                            <td>プレミアム席</td>
+                            <td class="number-highlight">200</td>
+                            <td class="number-highlight">3回</td>
+                            <td><span class="status-badge status-active">有効</span></td>
+                            <td>1</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="editTicketType(1)">編集</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteTicketType(1)">削除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>A席</strong></td>
+                            <td class="currency">¥6,500</td>
+                            <td>一般席</td>
+                            <td class="number-highlight">300</td>
+                            <td class="number-highlight">3回</td>
+                            <td><span class="status-badge status-active">有効</span></td>
+                            <td>2</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="editTicketType(2)">編集</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteTicketType(2)">削除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>B席</strong></td>
+                            <td class="currency">¥4,500</td>
+                            <td>一般席</td>
+                            <td class="number-highlight">250</td>
+                            <td class="number-highlight">2回</td>
+                            <td><span class="status-badge status-active">有効</span></td>
+                            <td>3</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="editTicketType(3)">編集</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteTicketType(3)">削除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>学生席</strong></td>
+                            <td class="currency">¥2,500</td>
+                            <td>割引席</td>
+                            <td class="number-highlight">84</td>
+                            <td class="number-highlight">1回</td>
+                            <td><span class="status-badge status-active">有効</span></td>
+                            <td>4</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="editTicketType(4)">編集</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteTicketType(4)">削除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>VIP席</strong></td>
+                            <td class="currency">¥15,000</td>
+                            <td>特別席</td>
+                            <td class="number-highlight">20</td>
+                            <td class="number-highlight">0回</td>
+                            <td><span class="status-badge status-inactive">無効</span></td>
+                            <td>5</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" onclick="editTicketType(5)">編集</button>
+                                <button class="btn btn-danger btn-sm" onclick="deleteTicketType(5)">削除</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 編集フォーム -->
+        <div id="editForm" class="form-container form-toggle">
+            <h2 style="margin-bottom: 20px; color: #2c3e50;">券種を編集</h2>
+            <form id="ticketTypeEditForm">
+                <input type="hidden" id="editId" name="editId">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editTypeName">券種名<span class="required">*</span></label>
+                        <input type="text" id="editTypeName" name="editTypeName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editPrice">価格（円）<span class="required">*</span></label>
+                        <input type="number" id="editPrice" name="editPrice" min="0" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editDefaultSeats">デフォルト席数</label>
+                        <input type="number" id="editDefaultSeats" name="editDefaultSeats" min="1">
+                        <div class="help-text">上演回作成時のデフォルト値（後で変更可能）</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editCategory">カテゴリ</label>
+                        <select id="editCategory" name="editCategory">
+                            <option value="">選択してください</option>
+                            <option value="premium">プレミアム席</option>
+                            <option value="standard">一般席</option>
+                            <option value="discount">割引席</option>
+                            <option value="special">特別席</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editDescription">説明・備考</label>
+                    <textarea id="editDescription" name="editDescription" rows="3"></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editSortOrder">表示順序</label>
+                        <input type="number" id="editSortOrder" name="editSortOrder" min="1">
+                        <div class="help-text">小さい数字ほど上位に表示</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editIsActive">状態<span class="required">*</span></label>
+                        <select id="editIsActive" name="editIsActive" required>
+                            <option value="true">有効</option>
+                            <option value="false">無効</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- 使用状況表示 -->
+                <div id="usageInfo" class="usage-info" style="display: none;">
+                    <strong>使用状況:</strong> この券種は現在この作品の <span id="usageCount">0</span> 回の上演回で使用されています。
+                    価格変更は新規作成の上演回のみに適用されます。
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="hideEditForm()">キャンセル</button>
+                    <button type="submit" class="btn btn-primary">変更を保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // サンプルデータ
+        const ticketTypes = [
+            { id: 1, name: 'S席', price: 8000, category: 'premium', defaultSeats: 200, usageCount: 3, isActive: true, sortOrder: 1, description: 'プレミアムな座席体験' },
+            { id: 2, name: 'A席', price: 6500, category: 'standard', defaultSeats: 300, usageCount: 3, isActive: true, sortOrder: 2, description: '標準的な席' },
+            { id: 3, name: 'B席', price: 4500, category: 'standard', defaultSeats: 250, usageCount: 2, isActive: true, sortOrder: 3, description: 'お手頃価格の席' },
+            { id: 4, name: '学生席', price: 2500, category: 'discount', defaultSeats: 84, usageCount: 1, isActive: true, sortOrder: 4, description: '学生割引価格' },
+            { id: 5, name: 'VIP席', price: 15000, category: 'special', defaultSeats: 20, usageCount: 0, isActive: false, sortOrder: 5, description: '特別サービス付き' }
+        ];
+
+        function showAddForm() {
+            document.getElementById('addForm').classList.add('show');
+            document.getElementById('typeName').focus();
+        }
+
+        function hideAddForm() {
+            document.getElementById('addForm').classList.remove('show');
+            document.getElementById('ticketTypeForm').reset();
+        }
+
+        function showEditForm() {
+            document.getElementById('editForm').classList.add('show');
+            document.getElementById('editTypeName').focus();
+        }
+
+        function hideEditForm() {
+            document.getElementById('editForm').classList.remove('show');
+            document.getElementById('ticketTypeEditForm').reset();
+            document.getElementById('usageInfo').style.display = 'none';
+            
+            // 編集中の行のハイライトを解除
+            const editRows = document.querySelectorAll('.edit-row');
+            editRows.forEach(row => row.classList.remove('edit-row'));
+        }
+
+        function editTicketType(id) {
+            const ticketType = ticketTypes.find(t => t.id === id);
+            if (!ticketType) return;
+
+            // 編集中の行をハイライト
+            const editRows = document.querySelectorAll('.edit-row');
+            editRows.forEach(row => row.classList.remove('edit-row'));
+            
+            const row = event.target.closest('tr');
+            row.classList.add('edit-row');
+
+            // フォームに値を設定
+            document.getElementById('editId').value = ticketType.id;
+            document.getElementById('editTypeName').value = ticketType.name;
+            document.getElementById('editPrice').value = ticketType.price;
+            document.getElementById('editDefaultSeats').value = ticketType.defaultSeats;
+            document.getElementById('editCategory').value = ticketType.category;
+            document.getElementById('editDescription').value = ticketType.description || '';
+            document.getElementById('editSortOrder').value = ticketType.sortOrder;
+            document.getElementById('editIsActive').value = ticketType.isActive.toString();
+
+            // 使用状況を表示
+            if (ticketType.usageCount > 0) {
+                document.getElementById('usageCount').textContent = ticketType.usageCount;
+                document.getElementById('usageInfo').style.display = 'block';
+            } else {
+                document.getElementById('usageInfo').style.display = 'none';
+            }
+
+            showEditForm();
+        }
+
+        function deleteTicketType(id) {
+            const ticketType = ticketTypes.find(t => t.id === id);
+            if (!ticketType) return;
+
+            if (ticketType.usageCount > 0) {
+                alert(`この券種「${ticketType.name}」は現在この作品の ${ticketType.usageCount} 回の上演回で使用されているため削除できません。\n\n削除するには、まず使用している上演回から券種を外してください。`);
+                return;
+            }
+
+            if (confirm(`券種「${ticketType.name}」を削除してもよろしいですか？\n\n注意: この操作は取り消せません。`)) {
+                alert(`券種「${ticketType.name}」が削除されました。`);
+                // 実際の実装では、ここでサーバーに削除リクエストを送信し、画面を更新
+            }
+        }
+
+        // 新規作成フォームの送信
+        document.getElementById('ticketTypeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            
+            alert(`新しい券種「${data.typeName}」が作成されました。\n\n設定内容:\n• 価格: ¥${parseInt(data.price).toLocaleString()}\n• デフォルト席数: ${data.defaultSeats || '未設定'}\n• カテゴリ: ${data.category || '未設定'}`);
+            
+            hideAddForm();
+            // 実際の実装では、ここでサーバーに送信し、一覧を更新
+        });
+
+        // 編集フォームの送信
+        document.getElementById('ticketTypeEditForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            
+            alert(`券種「${data.editTypeName}」の変更が保存されました。\n\n更新内容:\n• 価格: ¥${parseInt(data.editPrice).toLocaleString()}\n• デフォルト席数: ${data.editDefaultSeats || '未設定'}\n• 状態: ${data.editIsActive === 'true' ? '有効' : '無効'}`);
+            
+            hideEditForm();
+            // 実際の実装では、ここでサーバーに送信し、一覧を更新
+        });
+
+        // ESCキーでフォームを閉じる
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                if (document.getElementById('addForm').classList.contains('show')) {
+                    hideAddForm();
+                } else if (document.getElementById('editForm').classList.contains('show')) {
+                    hideEditForm();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
