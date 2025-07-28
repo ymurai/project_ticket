@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ステージ詳細 - チケット管理システム</title>
-    <style>
+    <title>公演サマリー - チケット管理</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <style>
         * {
             box-sizing: border-box;
             margin: 0;
@@ -19,7 +20,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -42,45 +43,162 @@
             font-size: 14px;
         }
 
-        .stage-info {
+        .tabs {
+            display: flex;
             background-color: #fff;
-            padding: 25px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            overflow: hidden;
         }
 
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        .tab {
+            flex: 1;
+            padding: 15px 20px;
+            text-align: center;
+            background-color: #ecf0f1;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: none;
+            font-size: 16px;
+        }
+
+        .tab.active {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .tab:hover:not(.active) {
+            background-color: #d5dbdb;
+        }
+
+        .tab-content {
+            display: none;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .required {
+            color: #e74c3c;
+            margin-left: 4px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: flex;
             gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .file-upload {
+            border: 2px dashed #ddd;
+            padding: 30px;
+            text-align: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+
+        .file-upload:hover {
+            border-color: #3498db;
+        }
+
+        .file-upload input[type="file"] {
+            display: none;
+        }
+
+        .file-upload-text {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .current-image {
+            max-width: 200px;
+            max-height: 300px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+        }
+
+        .info-card {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 20px;
             margin-bottom: 20px;
         }
 
-        .info-item {
-            padding: 15px;
-            background-color: #f8f9fa;
-            border-radius: 6px;
-            border-left: 4px solid #95a5a6;
+        .info-row {
+            display: flex;
+            margin-bottom: 10px;
         }
 
         .info-label {
-            font-size: 14px;
             font-weight: 600;
-            color: #7f8c8d;
-            margin-bottom: 5px;
+            min-width: 10rem;
+            color: #2c3e50;
         }
 
         .info-value {
-            font-size: 16px;
-            color: #2c3e50;
-            font-weight: 500;
+            color: #34495e;
         }
 
         .status-badge {
-            display: inline-block;
             padding: 4px 12px;
-            border-radius: 12px;
+            border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
             text-transform: uppercase;
@@ -91,20 +209,149 @@
             color: #155724;
         }
 
-        .status-upcoming {
+        .status-draft {
             background-color: #fff3cd;
             color: #856404;
         }
 
-        .status-ended {
-            background-color: #f8d7da;
-            color: #721c24;
+        .stage-list {
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            padding: 20px;
+        }
+
+        .stage-item {
+            background-color: white;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stage-info {
+            flex: 1;
+        }
+
+        .stage-date {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .stage-venue {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .stage-stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-secondary {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #7f8c8d;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #219a52;
+        }
+
+        .danger-zone {
+            border: 2px solid #e74c3c;
+            border-radius: 4px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .danger-zone h3 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+        }
+
+        .danger-zone p {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+
+        .help-text {
+            font-size: 14px;
+            color: #7f8c8d;
+            margin-top: 5px;
         }
 
         .section {
             background-color: #fff;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
 
@@ -153,34 +400,13 @@
             font-weight: 500;
         }
 
-        .progress-bar {
-            background-color: #e9ecef;
-            border-radius: 10px;
-            height: 20px;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background-color: #28a745;
-            transition: width 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
         .ticket-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
 
-        .ticket-table th,
-        .ticket-table td {
+        .ticket-table th, .ticket-table td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #eee;
@@ -192,308 +418,256 @@
             color: #2c3e50;
         }
 
-        .ticket-table tr:hover {
-            background-color: #f8f9fa;
-        }
-
-        .number-highlight {
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        .currency {
-            color: #27ae60;
-            font-weight: 600;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            margin: 0 5px;
-        }
-
-        .btn-primary {
-            background-color: #3498db;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background-color: #2980b9;
-        }
-
-        .btn-success {
-            background-color: #27ae60;
-            color: white;
-        }
-
-        .btn-success:hover {
-            background-color: #229954;
-        }
-
-        .btn-secondary {
-            background-color: #95a5a6;
-            color: white;
-        }
-
-        .btn-secondary:hover {
-            background-color: #7f8c8d;
-        }
-
-        .btn-outline {
-            background-color: transparent;
-            color: #6c757d;
-            border: 1px solid #6c757d;
-        }
-
-        .btn-outline:hover {
-            background-color: #6c757d;
-            color: white;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .alert {
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
-
-        .alert-warning {
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-            color: #856404;
-        }
-
-        .alert-info {
-            background-color: #d1ecf1;
-            border: 1px solid #bee5eb;
-            color: #0c5460;
-        }
-
         @media (max-width: 768px) {
-            .info-grid {
-                grid-template-columns: 1fr;
+            .form-row {
+                flex-direction: column;
             }
             
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .action-buttons {
+            .button-group {
                 flex-direction: column;
             }
 
-            .section-header {
+            .tabs {
                 flex-direction: column;
-                align-items: flex-start;
+            }
+
+            .stage-item {
+                flex-direction: column;
                 gap: 15px;
             }
 
-            .ticket-table {
-                font-size: 14px;
-            }
-
-            .ticket-table th,
-            .ticket-table td {
-                padding: 8px;
+            .stage-stats {
+                justify-content: space-around;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <!-- ヘッダー -->
         <div class="header">
-            <h1>ステージ詳細</h1>
-            <div class="breadcrumb"><a href="../home.html" style="color: #3498db; text-decoration: none;">ホーム</a> > ステージ管理 > ハムレット 2024年7月25日 19:00</div>
+            <h1>「新劇座」公演 『夏の夜の夢』 売上状況</h1>
+            <div class="breadcrumb">ホーム > 公演管理 > 売上状況</div>
         </div>
 
-        <!-- 基本情報 -->
-        <div class="stage-info">
-            <div class="info-grid">
-                <div class="info-item">
-                    <div class="info-label">公演名</div>
-                    <div class="info-value">ハムレット</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">会場</div>
-                    <div class="info-value">東京芸術劇場 プレイハウス</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">公演日時</div>
-                    <div class="info-value">2024年7月25日（木）19:00開演</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">開場時間</div>
-                    <div class="info-value">18:30</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">販売状況</div>
-                    <div class="info-value">
-                        <span class="status-badge status-active">販売中</span>
+        <div class="section">
+            <div class="section-content">
+                <div class="info-card">
+                    <div class="info-row">
+                        <div class="info-label">公演名:</div>
+                        <div class="info-value">夏の夜の夢</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">ジャンル:</div>
+                        <div class="info-value">演劇</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">上演時間:</div>
+                        <div class="info-value">120分</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">上演期間:</div>
+                        <div class="info-value">2025年3月15日 - 2025年3月16日</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">出演者・スタッフ等:</div>
+                        <div class="info-value">演出: 田中太郎<br>出演: 佐藤花子、鈴木一郎、高橋美咲</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-label">ステータス:</div>
+                        <div class="info-value">
+                            <span class="status-badge status-active">公開中</span>
+                        </div>
                     </div>
                 </div>
-                <div class="info-item">
-                    <div class="info-label">販売期間</div>
-                    <div class="info-value">2024/6/1 10:00 〜 7/25 18:00</div>
-                </div>
             </div>
-            
-            <div class="action-buttons">
-                <a href="edit.html" class="btn btn-primary">編集</a>
-                <button class="btn btn-success" onclick="downloadCSV()">売上データCSV</button>
-                <button class="btn btn-success" onclick="downloadOrdersCSV()">注文データCSV</button>
-                <button class="btn btn-secondary" onclick="window.print()">印刷</button>
-            </div>
-        </div>
+        </div>    
 
-        <!-- 販売状況サマリー -->
         <div class="section">
             <div class="section-header">
-                <h2 class="section-title">販売状況サマリー</h2>
-                <span class="info-value">最終更新: 2024/7/21 15:30</span>
+                <h2 class="section-title">全体サマリー</h5>
             </div>
             <div class="section-content">
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-value">567</div>
-                        <div class="stat-label">販売済み</div>
+                        <div class="stat-value">540 / 1,200席</div>
+                        <div class="stat-label">総販売数</div>
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar" role="progressbar" style="width: 45%;" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">45%</div>
+                        </div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">267</div>
-                        <div class="stat-label">残席数</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">68.0%</div>
-                        <div class="stat-label">販売率</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value">¥3,890,000</div>
-                        <div class="stat-label">売上金額</div>
-                    </div>
-                </div>
-
-                <div style="margin-top: 30px;">
-                    <h3 style="margin-bottom: 15px; color: #2c3e50;">全体販売進捗</h3>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 68%;">68.0% (567/834席)</div>
+                        <div class="stat-value">¥3,780,000</div>
+                        <div class="stat-label">総売上額</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 券種別詳細 -->
         <div class="section">
             <div class="section-header">
-                <h2 class="section-title">券種別販売状況</h2>
+                <h2 class="section-title">各ステージの販売状況</h5>
             </div>
             <div class="section-content">
-                <table class="ticket-table">
-                    <thead>
-                        <tr>
-                            <th>券種</th>
-                            <th>価格</th>
-                            <th>総席数</th>
-                            <th>販売済み</th>
-                            <th>残席</th>
-                            <th>販売率</th>
-                            <th>売上金額</th>
-                            <th>進捗</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>S席</strong></td>
-                            <td class="currency">¥8,000</td>
-                            <td class="number-highlight">200</td>
-                            <td class="number-highlight">178</td>
-                            <td class="number-highlight">22</td>
-                            <td class="number-highlight">89.0%</td>
-                            <td class="currency">¥1,424,000</td>
-                            <td>
-                                <div class="progress-bar" style="height: 15px; margin: 0;">
-                                    <div class="progress-fill" style="width: 89%; font-size: 10px;">89%</div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>A席</strong></td>
-                            <td class="currency">¥6,500</td>
-                            <td class="number-highlight">300</td>
-                            <td class="number-highlight">234</td>
-                            <td class="number-highlight">66</td>
-                            <td class="number-highlight">78.0%</td>
-                            <td class="currency">¥1,521,000</td>
-                            <td>
-                                <div class="progress-bar" style="height: 15px; margin: 0;">
-                                    <div class="progress-fill" style="width: 78%; font-size: 10px;">78%</div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>B席</strong></td>
-                            <td class="currency">¥4,500</td>
-                            <td class="number-highlight">250</td>
-                            <td class="number-highlight">125</td>
-                            <td class="number-highlight">125</td>
-                            <td class="number-highlight">50.0%</td>
-                            <td class="currency">¥562,500</td>
-                            <td>
-                                <div class="progress-bar" style="height: 15px; margin: 0;">
-                                    <div class="progress-fill" style="width: 50%; font-size: 10px;">50%</div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>学生席</strong></td>
-                            <td class="currency">¥2,500</td>
-                            <td class="number-highlight">84</td>
-                            <td class="number-highlight">30</td>
-                            <td class="number-highlight">54</td>
-                            <td class="number-highlight">35.7%</td>
-                            <td class="currency">¥75,000</td>
-                            <td>
-                                <div class="progress-bar" style="height: 15px; margin: 0;">
-                                    <div class="progress-fill" style="width: 35.7%; font-size: 10px;">36%</div>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot style="border-top: 2px solid #dee2e6; font-weight: 600; background-color: #f8f9fa;">
-                        <tr>
-                            <td><strong>合計</strong></td>
-                            <td>-</td>
-                            <td class="number-highlight">834</td>
-                            <td class="number-highlight">567</td>
-                            <td class="number-highlight">267</td>
-                            <td class="number-highlight">68.0%</td>
-                            <td class="currency">¥3,582,500</td>
-                            <td>-</td>
-                        </tr>
-                    </tfoot>
-                </table>
+                <div class="accordion" id="stageAccordion">
+            
+                    <!-- ステージ 1 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                <strong>2025/08/01 (金) 19:00</strong> - 東京文化会館 大ホール
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#stageAccordion">
+                            <div class="accordion-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>席種</th>
+                                            <th class="text-center">金額</th>
+                                            <th class="text-center">販売状況</th>
+                                            <th class="text-end">売上額</th>
+                                            <th class="text-center">状態</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>S席</td>
+                                            <td class="text-end">¥8,000</td>
+                                            <td class="text-center">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 80%;" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">80%</div>
+                                                </div>
+                                                <small>160 / 200席</small>
+                                            </td>
+                                            <td class="text-end"><strong>¥1,600,000</strong></td>
+                                            <td class="text-center"><span class="badge bg-success">販売中</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>A席</td>
+                                            <td class="text-end">¥6,000</td>
+                                            <td class="text-center">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100">60%</div>
+                                                </div>
+                                                <small>240 / 400席</small>
+                                            </td>
+                                            <td class="text-end"><strong>¥1,920,000</strong></td>
+                                            <td class="text-center"><span class="badge bg-success">販売中</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>B席</td>
+                                            <td class="text-end">¥3,000</td>
+                                            <td class="text-center">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">30%</div>
+                                                </div>
+                                                <small>60 / 200席</small>
+                                            </td>
+                                            <td class="text-end"><strong>¥300,000</strong></td>
+                                            <td class="text-center"><span class="badge bg-success">販売中</span></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="table-light">
+                                            <td colspan="4"><strong>合計</strong></td>
+                                            <td class="text-end"><strong>¥3,820,000</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ステージ 2 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                <strong>2025/08/02 (土) 14:00</strong> - 東京文化会館 大ホール
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#stageAccordion">
+                            <div class="accordion-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>席種</th>
+                                            <th class="text-center">金額</th>
+                                            <th class="text-center">販売状況</th>
+                                            <th class="text-end">売上額</th>
+                                            <th class="text-center">状態</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>S席</td>
+                                            <td class="text-end">¥8,000</td>
+                                            <td class="text-center">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 95%;" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100">95%</div>
+                                                </div>
+                                                <small>190 / 200席</small>
+                                            </td>
+                                            <td class="text-end"><strong>¥1,900,000</strong></td>
+                                            <td class="text-center"><span class="badge bg-success">販売中</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>A席</td>
+                                            <td class="text-end">¥6,000</td>
+                                            <td class="text-center">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 70%;" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100">70%</div>
+                                                </div>
+                                                <small>280 / 400席</small>
+                                            </td>
+                                            <td class="text-end"><strong>¥2,240,000</strong></td>
+                                            <td class="text-center"><span class="badge bg-success">販売中</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>B席</td>
+                                            <td class="text-end">¥3,000</td>
+                                            <td class="text-center">
+                                                <div class="progress">
+                                                    <div class="progress-bar bg-success" role="progressbar" style="width: 40%;" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100">40%</div>
+                                                </div>
+                                                <small>80 / 200席</small>
+                                            </td>
+                                            <td class="text-end"><strong>¥400,000</strong></td>
+                                            <td class="text-center"><span class="badge bg-success">販売中</span></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="table-light">
+                                            <td colspan="4"><strong>合計</strong></td>
+                                            <td class="text-end"><strong>¥4,540,000</strong></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ステージ 3 -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingThree">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                <strong>2025/08/03 (日) 14:00</strong> - 東京文化会館 大ホール
+                            </button>
+                        </h2>
+                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#stageAccordion">
+                            <div class="accordion-body">
+                                <p class="text-muted">まだ販売データがありません。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
 
-        <!-- アラート・注意事項 -->
-        <div class="alert alert-info">
-            <strong>販売状況:</strong> B席と学生席の販売率が低めです。プロモーションの強化を検討してください。
-        </div>
-
-        <!-- 最近の注文履歴 -->
         <div class="section">
             <div class="section-header">
-                <h2 class="section-title">最近の注文履歴（直近10件）</h2>
-                <a href="/orders?stage=123" class="btn btn-outline">全件表示</a>
+                <h2 class="section-title">最近の注文履歴（直近10件）</h5>
             </div>
             <div class="section-content">
                 <table class="ticket-table">
@@ -502,86 +676,102 @@
                             <th>注文番号</th>
                             <th>注文日時</th>
                             <th>券種</th>
-                            <th>枚数</th>
-                            <th>金額</th>
-                            <th>ステータス</th>
+                            <th class="text-center">枚数</th>
+                            <th class="text-end">金額</th>
+                            <th class="text-center">ステータス</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>#ORD-2024-001234</td>
-                            <td>2024/7/21 14:25</td>
+                            <td>#20250728-001</td>
+                            <td>2025/07/28 10:30</td>
                             <td>S席</td>
-                            <td>2枚</td>
-                            <td class="currency">¥16,000</td>
-                            <td><span class="status-badge status-active">決済完了</span></td>
+                            <td class="text-center">2</td>
+                            <td class="text-end">¥16,000</td>
+                            <td class="text-center"><span class="status-badge status-active">完了</span></td>
                         </tr>
                         <tr>
-                            <td>#ORD-2024-001233</td>
-                            <td>2024/7/21 13:45</td>
+                            <td>#20250728-002</td>
+                            <td>2025/07/28 10:25</td>
                             <td>A席</td>
-                            <td>4枚</td>
-                            <td class="currency">¥26,000</td>
-                            <td><span class="status-badge status-active">決済完了</span></td>
+                            <td class="text-center">1</td>
+                            <td class="text-end">¥6,000</td>
+                            <td class="text-center"><span class="status-badge status-active">完了</span></td>
                         </tr>
                         <tr>
-                            <td>#ORD-2024-001232</td>
-                            <td>2024/7/21 12:30</td>
+                            <td>#20250728-003</td>
+                            <td>2025/07/28 10:20</td>
                             <td>B席</td>
-                            <td>3枚</td>
-                            <td class="currency">¥13,500</td>
-                            <td><span class="status-badge status-active">決済完了</span></td>
+                            <td class="text-center">3</td>
+                            <td class="text-end">¥9,000</td>
+                            <td class="text-center"><span class="status-badge status-active">完了</span></td>
                         </tr>
                         <tr>
-                            <td>#ORD-2024-001231</td>
-                            <td>2024/7/21 11:15</td>
-                            <td>学生席</td>
-                            <td>1枚</td>
-                            <td class="currency">¥2,500</td>
-                            <td><span class="status-badge status-active">決済完了</span></td>
-                        </tr>
-                        <tr>
-                            <td>#ORD-2024-001230</td>
-                            <td>2024/7/21 10:20</td>
+                            <td>#20250728-004</td>
+                            <td>2025/07/28 10:15</td>
                             <td>S席</td>
-                            <td>2枚</td>
-                            <td class="currency">¥16,000</td>
-                            <td><span class="status-badge status-upcoming">決済待ち</span></td>
+                            <td class="text-center">1</td>
+                            <td class="text-end">¥8,000</td>
+                            <td class="text-center"><span class="status-badge status-active">完了</span></td>
+                        </tr>
+                        <tr>
+                            <td>#20250728-005</td>
+                            <td>2025/07/28 10:10</td>
+                            <td>A席</td>
+                            <td class="text-center">2</td>
+                            <td class="text-end">¥12,000</td>
+                            <td class="text-center"><span class="status-badge status-active">完了</span></td>
+                        </tr>
+                        <tr>
+                            <td>#20250728-006</td>
+                            <td>2025/07/28 10:05</td>
+                            <td>B席</td>
+                            <td class="text-center">1</td>
+                            <td class="text-end">¥3,000</td>
+                            <td class="text-center"><span class="status-badge status-active">完了</span></td>
+                        </tr>
+                        <tr>
+                            <td>#20250728-007</td>
+                            <td>2025/07/28 10:00</td>
+                            <td>S席</td>
+                            <td class="text-center">3</td>
+                            <td class="text-end">¥24,000</td>
+                            <td class="text-center"><span class="status-badge status-active">完了</span></td>
+                        </tr>
+                        <tr>
+                            <td>#20250727-008</td>
+                            <td>2025/07/27 18:00</td>
+                            <td>A席</td>
+                            <td class="text-center">1</td>
+                            <td class="text-end">¥6,000</td>
+                            <td class="text-center"><span class="status-badge status-active">完了</span></td>
+                        </tr>
+                        <tr>
+                            <td>#20250727-009</td>
+                            <td>2025/07/27 17:55</td>
+                            <td>B席</td>
+                            <td class="text-center">2</td>
+                            <td class="text-end">¥6,000</td>
+                            <td class="text-center"><span class="status-badge status-active">完了</span></td>
+                        </tr>
+                        <tr>
+                            <td>#20250727-010</td>
+                            <td>2025/07/27 17:50</td>
+                            <td>S席</td>
+                            <td class="text-center">1</td>
+                            <td class="text-end">¥8,000</td>
+                            <td class="text-center"><span class="status-badge status-active">完了</span></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+
+        <div class="mt-4">
+            <a href="../home.html" class="btn btn-secondary">公演一覧に戻る</a>
+        </div>
     </div>
 
-    <script>
-        function downloadCSV() {
-            // 実際の実装では、サーバーにリクエストを送信
-            alert('売上データCSVをダウンロードします。\n\n含まれるデータ:\n- 券種別売上サマリー\n- 時系列売上データ\n- 販売チャネル別データ');
-        }
-
-        function downloadOrdersCSV() {
-            // 実際の実装では、サーバーにリクエストを送信
-            alert('注文データCSVをダウンロードします。\n\n含まれるデータ:\n- 全注文の詳細情報\n- 顧客情報\n- 決済ステータス\n- チェックイン状況');
-        }
-
-        // リアルタイム更新のシミュレーション
-        function updateSalesData() {
-            // 実際の実装では、WebSocketやポーリングで最新データを取得
-            console.log('販売データを更新中...');
-        }
-
-        // 30秒ごとにデータ更新（実際の実装では適切な間隔に調整）
-        setInterval(updateSalesData, 30000);
-
-        // 印刷用スタイルの適用
-        window.addEventListener('beforeprint', function() {
-            document.body.style.backgroundColor = 'white';
-        });
-
-        window.addEventListener('afterprint', function() {
-            document.body.style.backgroundColor = '#f5f5f5';
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
