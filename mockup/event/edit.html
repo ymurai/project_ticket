@@ -213,13 +213,13 @@
             color: #856404;
         }
 
-        .performance-list {
+        .stage-list {
             background-color: #f8f9fa;
             border-radius: 4px;
             padding: 20px;
         }
 
-        .performance-item {
+        .stage-item {
             background-color: white;
             border: 1px solid #e9ecef;
             border-radius: 4px;
@@ -230,21 +230,21 @@
             align-items: center;
         }
 
-        .performance-info {
+        .stage-info {
             flex: 1;
         }
 
-        .performance-date {
+        .stage-date {
             font-weight: 600;
             color: #2c3e50;
         }
 
-        .performance-venue {
+        .stage-venue {
             color: #7f8c8d;
             font-size: 14px;
         }
 
-        .performance-stats {
+        .stage-stats {
             display: flex;
             gap: 20px;
             font-size: 14px;
@@ -301,6 +301,11 @@
             background-color: #7f8c8d;
         }
 
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
         .btn-danger {
             background-color: #e74c3c;
             color: white;
@@ -355,12 +360,12 @@
                 flex-direction: column;
             }
 
-            .performance-item {
+            .stage-item {
                 flex-direction: column;
                 gap: 15px;
             }
 
-            .performance-stats {
+            .stage-stats {
                 justify-content: space-around;
             }
         }
@@ -376,7 +381,7 @@
         <div class="tabs">
             <button class="tab active" onclick="showTab('overview')">概要</button>
             <button class="tab" onclick="showTab('edit')">編集</button>
-            <button class="tab" onclick="showTab('performances')">ステージ</button>
+            <button class="tab" onclick="showTab('stages')">ステージ</button>
             <button class="tab" onclick="showTab('settings')">設定</button>
         </div>
 
@@ -497,13 +502,13 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="performanceStart">上演期間（開始日）<span class="required">*</span></label>
-                        <input type="date" id="performanceStart" name="performanceStart" value="2025-03-15" required>
+                        <label for="stageStart">上演期間（開始日）<span class="required">*</span></label>
+                        <input type="date" id="stageStart" name="stageStart" value="2025-03-15" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="performanceEnd">上演期間（終了日）<span class="required">*</span></label>
-                        <input type="date" id="performanceEnd" name="performanceEnd" value="2025-03-16" required>
+                        <label for="stageEnd">上演期間（終了日）<span class="required">*</span></label>
+                        <input type="date" id="stageEnd" name="stageEnd" value="2025-03-16" required>
                     </div>
                 </div>
 
@@ -594,15 +599,15 @@ Instagram: @midsummer_official</textarea>
             </form>
         </div>
 
-        <div id="performances" class="tab-content">
+        <div id="stages" class="tab-content">
             <h3>ステージ一覧</h3>
-            <div class="performance-list">
-                <div class="performance-item">
-                    <div class="performance-info">
-                        <div class="performance-date">2025年3月15日（土） 14:00</div>
-                        <div class="performance-venue">東京芸術劇場 シアターウエスト</div>
+            <div class="stage-list">
+                <div class="stage-item">
+                    <div class="stage-info">
+                        <div class="stage-date">2025年3月15日（土） 14:00</div>
+                        <div class="stage-venue">東京芸術劇場 シアターウエスト</div>
                     </div>
-                    <div class="performance-stats">
+                    <div class="stage-stats">
                         <div class="stat-item">
                             <div class="stat-value">80/120</div>
                             <div class="stat-label">販売済</div>
@@ -611,15 +616,18 @@ Instagram: @midsummer_official</textarea>
                             <div class="stat-value">¥240,000</div>
                             <div class="stat-label">売上</div>
                         </div>
+                        <div class="stat-item">
+                            <a href="../stage/edit.html" class="btn btn-primary btn-sm">編集</a>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="performance-item">
-                    <div class="performance-info">
-                        <div class="performance-date">2025年3月15日（土） 19:00</div>
-                        <div class="performance-venue">東京芸術劇場 シアターウエスト</div>
+                <div class="stage-item">
+                    <div class="stage-info">
+                        <div class="stage-date">2025年3月15日（土） 19:00</div>
+                        <div class="stage-venue">東京芸術劇場 シアターウエスト</div>
                     </div>
-                    <div class="performance-stats">
+                    <div class="stage-stats">
                         <div class="stat-item">
                             <div class="stat-value">95/120</div>
                             <div class="stat-label">販売済</div>
@@ -628,15 +636,18 @@ Instagram: @midsummer_official</textarea>
                             <div class="stat-value">¥285,000</div>
                             <div class="stat-label">売上</div>
                         </div>
+                        <div class="stat-item">
+                            <a href="../stage/edit.html" class="btn btn-primary btn-sm">編集</a>
+                        </div>
                     </div>
                 </div>
 
-                <div class="performance-item">
-                    <div class="performance-info">
-                        <div class="performance-date">2025年3月16日（日） 14:00</div>
-                        <div class="performance-venue">東京芸術劇場 シアターウエスト</div>
+                <div class="stage-item">
+                    <div class="stage-info">
+                        <div class="stage-date">2025年3月16日（日） 14:00</div>
+                        <div class="stage-venue">東京芸術劇場 シアターウエスト</div>
                     </div>
-                    <div class="performance-stats">
+                    <div class="stage-stats">
                         <div class="stat-item">
                             <div class="stat-value">65/120</div>
                             <div class="stat-label">販売済</div>
@@ -645,12 +656,15 @@ Instagram: @midsummer_official</textarea>
                             <div class="stat-value">¥195,000</div>
                             <div class="stat-label">売上</div>
                         </div>
+                        <div class="stat-item">
+                            <a href="../stage/edit.html" class="btn btn-primary btn-sm">編集</a>
+                        </div>
                     </div>
                 </div>
             </div>
             
             <div class="button-group">
-                <a href="../performance/new.html" class="btn btn-success">新しいステージを追加</a>
+                <a href="../stage/new.html" class="btn btn-success">新しいステージを追加</a>
             </div>
         </div>
 
